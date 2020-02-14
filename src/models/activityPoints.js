@@ -15,6 +15,11 @@ const ActivityPoints = mongoose.model('ActivityPoint',{
         min:0,
         max:10,
     },
+    workoutPoints:{
+        type:Number,
+        default:0,
+        min:0,
+    },
     waterPoints: {
         type:Number,
         min:0,
@@ -26,6 +31,10 @@ const ActivityPoints = mongoose.model('ActivityPoint',{
         min:0,
         max:10,
     },
+    stepPoints:{
+        type:Number,
+        min:0
+    },
     totalPoints: {
         type: Number,
         default:0,
@@ -34,3 +43,5 @@ const ActivityPoints = mongoose.model('ActivityPoint',{
     
 
 })
+
+module.exports = ActivityPoints;

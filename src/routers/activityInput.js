@@ -1,8 +1,8 @@
 const express = require('express');
-const activityRouter = new express.Router();
+const activityInputRouter = new express.Router();
 const ActivityInput = require('../models/activityInput')
 
-activityRouter.post('/activityInput/',async(req,res) => {
+activityInputRouter.post('/activityInput/',async(req,res) => {
     try{
         const newActivityInput = new ActivityInput(req.body);
         const savedActivityInput = await newActivityInput.save();
@@ -14,4 +14,4 @@ activityRouter.post('/activityInput/',async(req,res) => {
     }
 })
 
-module.exports = activityRouter;
+module.exports = activityInputRouter;

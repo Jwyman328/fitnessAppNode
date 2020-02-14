@@ -3,10 +3,13 @@ require('./db/mongoose')
 const express = require('express')
 const userRouter = require('./routers/Users')
 const activityInputRouter = require('./routers/activityInput')
-const app = express()
-app.use(express.json())
-app.use(activityInputRouter)
-app.use(userRouter)
+const activityPointRouter = require('./routers/activityPoints')
+
+const app = express();
+app.use(express.json());
+app.use(activityInputRouter);
+app.use(userRouter);
+app.use(activityPointRouter);
 app.get('/', (req, res) => {
     res.send('hello world')
 })
