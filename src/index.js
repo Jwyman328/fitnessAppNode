@@ -4,12 +4,14 @@ const express = require('express')
 const userRouter = require('./routers/Users')
 const activityInputRouter = require('./routers/activityInput')
 const activityPointRouter = require('./routers/activityPoints')
+const totalPointGoalRouter = require('./routers/totalPointGoal')
 
 const app = express();
 app.use(express.json());
 app.use(activityInputRouter);
 app.use(userRouter);
 app.use(activityPointRouter);
+app.use(totalPointGoalRouter);
 app.get('/', (req, res) => {
     res.send('hello world')
 })
