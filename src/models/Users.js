@@ -20,12 +20,11 @@ const UserSchema = new mongoose.Schema({
             }
         }
     },
-    tokens:[{
-        token: {
+    token: {
             type: String,
             required:true
         }
-    }],
+    ,
     totalPoints: {
         type:Number,
         default:0,
@@ -54,10 +53,17 @@ UserSchema.pre('save', async function(next){
 })
 // generate a token on creation of user/ sign up
 UserSchema.methods.generateJWTToken = async function(){
-    const user = this
-    const newToken = jwt.sign( {id: user._id}, 'secrectcode')
-    user.tokens.push({token:newToken}) // add token to array of tokens.
-    user.save()
+    try{
+        const user = this
+        const newToken = jwt.sign( {_id: user._id.toString()}, 'secrectcode')
+        console.log(newToken ,'nt')
+        user.token = newToken // add token to array of tokens.
+        await user.save()
+        return newToken
+    }catch(error){
+        console.log(error)
+    }
+    
 }
 const User = mongoose.model('User',UserSchema)
 

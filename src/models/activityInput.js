@@ -41,12 +41,14 @@ const ActivityInput = mongoose.model('ActivityInput',{
     },
     workoutTimeLength: { //time in minutes
         type:Number,
+        default:0,
         min: 0,
         max:[1000,'seriously thats too long']
     },
     steps:{
         type:Number,
         min:0,
+        default:0,
         max: [70000, 'that would be a lie'],
         required:true,
     }

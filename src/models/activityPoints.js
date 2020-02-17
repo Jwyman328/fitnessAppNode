@@ -27,11 +27,13 @@ const ActivityPoints = mongoose.model('ActivityPoint',{
         default:0,
     },
     cleanEatingPoints:{
+        default:0,
         type:Number,
         min:0,
         max:10,
     },
     stepPoints:{
+        default:0,
         type:Number,
         min:0
     },

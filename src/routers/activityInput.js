@@ -1,9 +1,12 @@
 const express = require('express');
 const activityInputRouter = new express.Router();
 const ActivityInput = require('../models/activityInput')
+const auth = require('../middleware/auth')
 
-activityInputRouter.post('/activityInput/',async(req,res) => {
+activityInputRouter.post('/activityInput/',auth, async(req,res) => {
     try{
+        req.body.user = req.user._id
+        console.log(req.body)
         const newActivityInput = new ActivityInput(req.body);
         const savedActivityInput = await newActivityInput.save();
         res.send('new activity input created')
@@ -15,10 +18,9 @@ activityInputRouter.post('/activityInput/',async(req,res) => {
 })
 
 // get individual activity input 
-activityInputRouter.get('/activityInput/:id/', async(req, res) => {
+activityInputRouter.get('/activityInput/mine/',auth, async(req, res) => {
     try{
-        console.log(req)
-        const activityInput = await ActivityInput.findById(req.params.id);
+        const activityInput = await ActivityInput.findById(req.body);
         if (activityInput){
             res.send(activityInput)
         }else{
@@ -32,9 +34,9 @@ activityInputRouter.get('/activityInput/:id/', async(req, res) => {
 })
 
 // get all of a user's activity inputs
-activityInputRouter.get('/allActivityInputs/', async(req, res) => {
+activityInputRouter.get('/allActivityInputs/',auth, async(req, res) => {
     try{
-        const allActivityInputs = await ActivityInput.find(req.body);
+        const allActivityInputs = await ActivityInput.find({user: req.user.id});
         // return value even if empty 
         res.send(allActivityInputs)
     }catch(error){

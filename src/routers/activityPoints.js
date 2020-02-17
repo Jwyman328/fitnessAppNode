@@ -1,10 +1,11 @@
 const express = require('express')
-
+const auth = require('../middleware/auth')
 const ActivityPoint = require('../models/activityPoints')
 const activityPointRouter = new express.Router()
 
-activityPointRouter.post('/activityPoint/', async(req,res) => {
+activityPointRouter.post('/activityPoint/', auth, async(req,res) => {
     try{
+        req.body.user = req.user._id
         const newActivityPoint = new ActivityPoint(req.body);
         const savedActivityPoint = await newActivityPoint.save();
         res.send(`activity point created ${savedActivityPoint}`);
@@ -15,7 +16,7 @@ activityPointRouter.post('/activityPoint/', async(req,res) => {
 })
 
 // find specific activity point by id
-activityPointRouter.get('/activityPoint/:id/', async(req,res)=>{
+activityPointRouter.get('/activityPoint/id/',auth, async(req,res)=>{
     try{
         const specificActivityPoint = await ActivityPoint.findById(req.params.id);
         //if activity point found.
@@ -32,10 +33,9 @@ activityPointRouter.get('/activityPoint/:id/', async(req,res)=>{
 })
 
 //find all activity points for user 
-activityPointRouter.get('/allActivityPoints/', async(req,res)=>{
+activityPointRouter.get('/allActivityPoints/mine/',auth, async(req,res)=>{
     try{
-        console.log(req);
-        const allUserActivityPoints = await ActivityPoint.find(req.body);
+        const allUserActivityPoints = await ActivityPoint.find({user:req.user._id});
         //if activity point found.
         if (allUserActivityPoints){
             res.send(allUserActivityPoints);
