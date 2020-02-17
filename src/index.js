@@ -1,7 +1,7 @@
 require('./db/mongoose')
 
 const express = require('express')
-const userRouter = require('./routers/Users')
+const userRouter = require('./routers/authentication.js/Users')
 const activityInputRouter = require('./routers/activityInput')
 const activityPointRouter = require('./routers/activityPoints')
 const totalPointGoalRouter = require('./routers/totalPointGoal')
