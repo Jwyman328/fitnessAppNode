@@ -1,9 +1,9 @@
 const express = require('express')
-
+const auth = require('../middleware/auth')
 const challengeRouter = new express.Router();
 const Challenge = require('../models/challenge')
 
-challengeRouter.post('/challenge/', async(req, res) => {
+challengeRouter.post('/challenge/',auth, async(req, res) => {
     try{
         console.log(req.body)
         const newChallenge = await new Challenge(req.body);
@@ -17,7 +17,7 @@ challengeRouter.post('/challenge/', async(req, res) => {
 })
 
 // get by id 
-challengeRouter.get('/challenge/:id/', async(req, res) => {
+challengeRouter.get('/challenge/:id/',auth, async(req, res) => {
     try {
         const challenge = await Challenge.findById(req.params.id);
         if (challenge){
@@ -33,7 +33,7 @@ challengeRouter.get('/challenge/:id/', async(req, res) => {
 })
 
 //get by user
-challengeRouter.get('/allChallenges/', async(req, res) => {
+challengeRouter.get('/allChallenges/',auth, async(req, res) => {
     try {
         const challenges = await Challenge.find(req.body);
         console.log(challenges)

@@ -1,11 +1,12 @@
 const express = require('express');
-
+const auth = require('../middleware/auth')
 const ChallengeInvitation = require('../models/challengeInvitation')
 const ChallengeInvitationRouter = new express.Router();
 
 // create Invitation;
-ChallengeInvitationRouter.post('/challengeInvitation/', async(req,res) => {
+ChallengeInvitationRouter.post('/challengeInvitation/',auth, async(req,res) => {
     try{
+        req.body.creator = req.user._id;
         const newChallengeInvitation = new ChallengeInvitation(req.body);
         const savedChallngeInvitation = await newChallengeInvitation.save();
         res.send(savedChallngeInvitation);
@@ -17,7 +18,7 @@ ChallengeInvitationRouter.post('/challengeInvitation/', async(req,res) => {
 });
 
 //get challenge invitation by id
-ChallengeInvitationRouter.get('/challengeInvitation/:id/', async(req, res) => {
+ChallengeInvitationRouter.get('/challengeInvitation/:id/', auth,  async(req, res) => {
     try{
         const challengeInvitation = await ChallengeInvitation.findById(req.params.id);
         if (challengeInvitation){
@@ -36,9 +37,9 @@ ChallengeInvitationRouter.get('/challengeInvitation/:id/', async(req, res) => {
 
 //get by user
 // req.body = {"invitee": "thisUser"}
-ChallengeInvitationRouter.get('/AllChallengeInvitation/', async(req, res) => {
+ChallengeInvitationRouter.get('/AllChallengeInvitation/myInvitations/',auth, async(req, res) => {
     try{
-        const allChallengeInvitation = await ChallengeInvitation.find(req.body);
+        const allChallengeInvitation = await ChallengeInvitation.find({invitee:req.user._id});
         res.send(allChallengeInvitation);
     }catch(error){
         res.status(400);
@@ -48,9 +49,9 @@ ChallengeInvitationRouter.get('/AllChallengeInvitation/', async(req, res) => {
 });
 
 // get invitation by creator
-ChallengeInvitationRouter.get('/AllChallengeInvitationByCreator/', async(req, res) => {
+ChallengeInvitationRouter.get('/AllChallengeInvitationByCreator/mine/',auth, async(req, res) => {
     try{
-        const allChallengeInvitation = await ChallengeInvitation.find(req.body);
+        const allChallengeInvitation = await ChallengeInvitation.find({creator:req.user._id});
         res.send(allChallengeInvitation);
     }catch(error){
         res.status(400);
