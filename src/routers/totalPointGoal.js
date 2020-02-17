@@ -1,9 +1,11 @@
 const express = require('express')
+const auth = require('../middleware/auth')
 const TotalPointGoal = require('../models/totalPointGoal')
 const totalPointGoalRouter = new express.Router();
 
-totalPointGoalRouter.post('/totalPointGoal/', async(req, res) => {
+totalPointGoalRouter.post('/totalPointGoal/',auth, async(req, res) => {
     try{
+        req.body.user = req.user._id
         const newTotalPointGoal = await new TotalPointGoal(req.body);
         const savedTotalPointGoal = await newTotalPointGoal.save();
         res.send(`new total point goal created ${savedTotalPointGoal}`);
@@ -13,7 +15,7 @@ totalPointGoalRouter.post('/totalPointGoal/', async(req, res) => {
     }
 });
 
-totalPointGoalRouter.get('/totalPointGoal/:id/', async(req, res) => {
+totalPointGoalRouter.get('/totalPointGoal/:id/',auth, async(req, res) => {
     try{
         const totalPointGoal = await TotalPointGoal.findById(req.params.id);
         if (totalPointGoal){
@@ -28,9 +30,9 @@ totalPointGoalRouter.get('/totalPointGoal/:id/', async(req, res) => {
 });
 
 // get all goals by user
-totalPointGoalRouter.get('/allTotalPointGoal/', async(req,res) => {
+totalPointGoalRouter.get('/allTotalPointGoal/',auth, async(req,res) => {
     try{
-        const allPointGoals = await TotalPointGoal.find(req.body);
+        const allPointGoals = await TotalPointGoal.find({user:req.user._id});
         res.send(allPointGoals)
     }catch(error){
         res.status(400)
