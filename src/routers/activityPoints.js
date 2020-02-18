@@ -16,9 +16,9 @@ activityPointRouter.post('/activityPoint/', auth, async(req,res) => {
 })
 
 // find specific activity point by id
-activityPointRouter.get('/activityPoint/id/',auth, async(req,res)=>{
+activityPointRouter.get('/activityPoint/:id/',auth, async(req,res)=>{
     try{
-        const specificActivityPoint = await ActivityPoint.findById(req.params.id);
+        const specificActivityPoint = await ActivityPoint.findOne({_id : req.params.id, user: req.user._id});
         //if activity point found.
         if (specificActivityPoint){
             res.send(specificActivityPoint);

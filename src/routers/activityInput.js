@@ -18,9 +18,9 @@ activityInputRouter.post('/activityInput/',auth, async(req,res) => {
 })
 
 // get individual activity input 
-activityInputRouter.get('/activityInput/mine/',auth, async(req, res) => {
+activityInputRouter.get('/activityInput/:id/',auth, async(req, res) => {
     try{
-        const activityInput = await ActivityInput.findById(req.body);
+        const activityInput = await ActivityInput.findOne({_id:req.params.id, user: req.user._id});
         if (activityInput){
             res.send(activityInput)
         }else{

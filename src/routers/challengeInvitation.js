@@ -20,7 +20,7 @@ ChallengeInvitationRouter.post('/challengeInvitation/',auth, async(req,res) => {
 //get challenge invitation by id
 ChallengeInvitationRouter.get('/challengeInvitation/:id/', auth,  async(req, res) => {
     try{
-        const challengeInvitation = await ChallengeInvitation.findById(req.params.id);
+        const challengeInvitation = await ChallengeInvitation.findOne({_id:req.params.id, creator: req.user._id});
         if (challengeInvitation){
             res.send(challengeInvitation);
         }else{

@@ -6,6 +6,7 @@ const Challenge = require('../models/challenge')
 challengeRouter.post('/challenge/',auth, async(req, res) => {
     try{
         console.log(req.body)
+        req.body.creator = req.user._id;
         const newChallenge = await new Challenge(req.body);
         const savedChallenge = await newChallenge.save();
         res.send(`challenge created: ${savedChallenge} `)
@@ -19,7 +20,8 @@ challengeRouter.post('/challenge/',auth, async(req, res) => {
 // get by id 
 challengeRouter.get('/challenge/:id/',auth, async(req, res) => {
     try {
-        const challenge = await Challenge.findById(req.params.id);
+        console.log({_id:req.params.id, creator:req.user._id})
+        const challenge = await Challenge.findOne({_id:req.params.id,creator:req.user._id});
         if (challenge){
             res.send(challenge)
         }else{

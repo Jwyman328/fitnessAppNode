@@ -17,7 +17,7 @@ totalPointGoalRouter.post('/totalPointGoal/',auth, async(req, res) => {
 
 totalPointGoalRouter.get('/totalPointGoal/:id/',auth, async(req, res) => {
     try{
-        const totalPointGoal = await TotalPointGoal.findById(req.params.id);
+        const totalPointGoal = await TotalPointGoal.findOne({_id:req.params.id, user:req.user._id });
         if (totalPointGoal){
             res.send(totalPointGoal);
         }else{
