@@ -63,9 +63,9 @@ ChallengeInvitationRouter.get('/AllChallengeInvitationByCreator/mine/',auth, asy
 // use param to get ChallengeInvitation
 // use body to set value, pending, accepted or rejected
 // body json should be like {"status": "accepted"}
-ChallengeInvitationRouter.patch('/updateChallengeStatus/:id/', async(req,res)=> {
+ChallengeInvitationRouter.patch('/updateChallengeStatus/:id/',auth, async(req,res)=> {
     try{
-        const challengeInvitation = await ChallengeInvitation.findByIdAndUpdate(req.params.id, req.body,{new:true, runValidators:true});
+        const challengeInvitation = await ChallengeInvitation.findOneAndUpdate({_id: req.params.id,creator:req.user._id }, req.body,{new:true, runValidators:true});
         res.send(`updated, new challenge invitation: ${challengeInvitation}`);
     }catch(error){
         res.send(`error updating invitation with id :${req.params.id}`);
