@@ -33,7 +33,8 @@ userRouter.post('/user/create/',async (req,res)=> {
         // give users a jwt token 
         const newUser = new User(req.body)
         newUser.generateJWTToken()
-        res.send('New User Created')
+        res.send(`New User Created`, newUser)
+    
     }catch(error){
         res.status('400')
         res.send(`error on user creation ${error}`)
