@@ -8,8 +8,11 @@ const activityPointRouter = require('./routers/activityPoints')
 const totalPointGoalRouter = require('./routers/totalPointGoal')
 const challengeRouter = require('./routers/challenge')
 const ChallengeInvitationRouter = require('./routers/challengeInvitation')
+var cors = require('cors')
 
 const app = express();
+app.use(cors())
+
 app.use(express.json());
 app.use(activityInputRouter);
 app.use(userRouter);
