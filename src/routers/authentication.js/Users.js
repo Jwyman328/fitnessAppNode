@@ -1,10 +1,30 @@
 const express = require('express');
 const User = require('../../models/Users')
 const jwt  = require('jsonwebtoken')
+const bcrypt = require('bcryptjs')
 const userRouter = new express.Router();
 const auth = require('../../middleware/auth')
-userRouter.get('/user/login', async (req, res) => {
-    // create token when sign in 
+
+/**
+ * create and return a token when is valid sign in
+ */
+userRouter.post('/user/login', async (req, res) => {
+    try{
+        // get User by email
+        const user = await User.findOne({email: req.body.email});
+        //try to match hashed password with entered password
+        const isPasswordMatching =  await bcrypt.compare(req.body.password, user.password)
+        if (isPasswordMatching){
+            // create a token for user and send it back
+            const token = await user.generateJWTToken()
+            res.send({token:token})
+        }else{
+            res.status('400').send('password is invalid')
+        }
+
+    }catch(error){
+        res.status(400).send('error email does not exist')
+    }
 })
 
 userRouter.post('/user/create/',async (req,res)=> {
@@ -13,8 +33,6 @@ userRouter.post('/user/create/',async (req,res)=> {
         // give users a jwt token 
         const newUser = new User(req.body)
         newUser.generateJWTToken()
-        //const savedUser = await newUser.save()
-        //savedUser.generateJWTToken()
         res.send('New User Created')
     }catch(error){
         res.status('400')
@@ -31,8 +49,6 @@ userRouter.get('/user/profile/',auth, async (req, res) => {
         res.status(400)
         .send('could not find user profile')
     }
-    
-
 })
 
 module.exports = userRouter;

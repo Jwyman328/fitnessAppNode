@@ -10,13 +10,11 @@ async function authMiddleWare(req, res, next){
         const token = req.header('Authentication')
         //const token = req.header('Authorization').replace('Bearer ', '')
 
-        console.log(token)
         //const decode = jwt.verify(token, 'secretcode')
         //console.log(decode, 'qo')
         // get user 
         const user = await User.findOne({token: token})
         req.user = user // add the user to the request 
-        console.log(user)
         if (user){
             next()
         }else{

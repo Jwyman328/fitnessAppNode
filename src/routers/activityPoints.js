@@ -24,6 +24,7 @@ activityPointRouter.get('/activityPoint/:id/',auth, async(req,res)=>{
             res.send(specificActivityPoint);
         }else{
             // if empty 
+            res.status(400)
             res.send('activity point not found')
         }
     }catch(error){
