@@ -28,13 +28,14 @@ userRouter.post('/user/login', async (req, res) => {
 })
 
 userRouter.post('/user/create/',async (req,res)=> {
-    console.log(req.body)
+    console.log(req.body.data, 'hi')
     try{
         // give users a jwt token 
-        const newUser = new User(req.body)
+        const newUser = new User(req.body.data)
+        console.log(newUser, 'uus 1')
         newUser.generateJWTToken()
+        console.log(newUser,'2')
         res.send(newUser)
-    
     }catch(error){
         res.status('400')
         res.send(`error on user creation ${error}`)

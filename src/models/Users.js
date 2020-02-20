@@ -55,8 +55,9 @@ UserSchema.pre('save', async function(next){
 UserSchema.methods.generateJWTToken = async function(){
     try{
         const user = this
+        console.log(user,'userr')
         const newToken = jwt.sign( {_id: user._id.toString()}, 'secrectcode')
-        console.log(newToken ,'nt')
+        //console.log(newToken ,'nt')
         user.token = newToken // add token to array of tokens.
         await user.save()
         return newToken
