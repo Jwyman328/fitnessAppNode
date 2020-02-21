@@ -11,6 +11,10 @@ const totalPointGoal = mongoose.model('totalPointGoal',{
     goalEndDate:{
         type: Date,
     },
+    dailyGoal:{
+        type:Boolean,
+        default:false,
+    },
     pointGoal:{
         type:Number,
         min:0,
