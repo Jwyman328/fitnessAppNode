@@ -11,9 +11,9 @@ const auth = require('../../middleware/auth')
 userRouter.post('/user/login', async (req, res) => {
     try{
         // get User by email
-        const user = await User.findOne({email: req.body.email});
+        const user = await User.findOne({email: req.body.data.email});
         //try to match hashed password with entered password
-        const isPasswordMatching =  await bcrypt.compare(req.body.password, user.password)
+        const isPasswordMatching =  await bcrypt.compare(req.body.data.password, user.password)
         if (isPasswordMatching){
             // create a token for user and send it back
             const token = await user.generateJWTToken()

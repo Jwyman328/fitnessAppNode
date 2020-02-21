@@ -6,7 +6,6 @@ const auth = require('../middleware/auth')
 activityInputRouter.post('/activityInput/',auth, async(req,res) => {
     try{
         req.body.user = req.user._id
-        console.log(req.body)
         const newActivityInput = new ActivityInput(req.body);
         const savedActivityInput = await newActivityInput.save();
         res.send('new activity input created')
