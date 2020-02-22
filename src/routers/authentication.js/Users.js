@@ -23,6 +23,7 @@ userRouter.post('/user/login', async (req, res) => {
         }
 
     }catch(error){
+        console.log(error)
         res.status(400).send('error email does not exist')
     }
 })

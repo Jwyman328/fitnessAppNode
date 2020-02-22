@@ -4,8 +4,8 @@ const app = require('../app')
 const request = require('supertest')
 const userData = require('./testData/userData')
 const activityInputData = require('./testData/activityInput')
-const mongoose = require('mongoose')
-const activityIdTwo = mongoose.Types.ObjectId()
+const {createUniqueId,
+    makePostRequestWithToken,makeGetRequestWithToken} = require('./utilities/testHelpFunctions')
 
 /**
  * Create a user and activityInput.
@@ -27,26 +27,23 @@ afterEach( async() => {
 
 // create activity input /activityInput/
 test('Should create activity input', async() => {
-    // alter data Id so no duplication id error 
-    activityInputData._id = activityIdTwo;
-    const response = await request(app).post('/activityInput/').set({'Authentication': userData.token})
-        .send(activityInputData)
-    //expect correct status
+    activityInputData._id = createUniqueId();
+    const response = await makePostRequestWithToken('/activityInput/',userData.token,activityInputData)
+    //const response = await request(app).post('/activityInput/').set({'Authorization': userData.token})
+       // .send(activityInputData)
     expect(response.status).toBe(200)
-    //expect inputActivity created message 
     expect(response.text).toBe('new activity input created')
 })
 
 //get user activityInput by id /activityInput/:id/
 test('should get user activity input by id', async() => {
-    const response = await request(app).get(`/activityInput/${activityInputData._id}/`).set({'Authentication': userData.token});
+    const response = await makeGetRequestWithToken(`/activityInput/${activityInputData._id}/`,userData.token)
     expect(response.body._id).toBe(activityInputData._id.toHexString())
 })
 
 //get array of all user's activtyInput
 test('should get all user activityInput', async() => {
-    console.log(userData.token, 'tok')
-    const response = await request(app).get('/allActivityInputs/').set({'Authentication': userData.token});
+    const response = await makeGetRequestWithToken('/allActivityInputs/', userData.token);
     expect(response.body[0]._id).toBe(activityInputData._id.toHexString())
 })
 

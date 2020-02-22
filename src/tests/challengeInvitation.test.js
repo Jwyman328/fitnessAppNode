@@ -4,7 +4,10 @@ const ChallengeInvitation = require('../models/challengeInvitation')
 const request = require('supertest')
 const userData = require('./testData/userData')
 const challengeInvitationData = require('./testData/challengeInvitationData')
-const mongoose = require('mongoose')
+const { createUniqueId,
+    makePostRequestWithToken,makeGetRequestWithToken, makePatchRequestWithToken} = require('./utilities/testHelpFunctions')
+
+
 
 /**
  * before each test create a user and a invitation challeng.
@@ -28,10 +31,10 @@ afterEach(async() => {
  */
 test('should create challenge invitation with post', async() => {
     //set unique _id different from beforeEach challengeInvitation id.
-    challengeInvitationData._id = mongoose.Types.ObjectId().toHexString()
-    const response = await request(app).post('/challengeInvitation/').set({'Authentication': userData.token}).send(challengeInvitationData)
+    challengeInvitationData._id = createUniqueId()
+    const response = await makePostRequestWithToken('/challengeInvitation/',userData.token,challengeInvitationData)
     expect(response.status).toBe(200)
-    expect(response.body._id).toEqual(challengeInvitationData._id)
+    expect(response.body._id).toEqual(challengeInvitationData._id.toHexString())
 })
 
 /**
@@ -39,9 +42,9 @@ test('should create challenge invitation with post', async() => {
  * Assert 200 status code and same is as in beforeEach creation.
  */
 test('should get invitation by id', async() => {
-    const response = await request(app).get(`/challengeInvitation/${challengeInvitationData._id}/`).set({'Authentication': userData.token})
+    const response = await makeGetRequestWithToken(`/challengeInvitation/${challengeInvitationData._id}/`,userData.token)
     expect(response.status).toBe(200)
-    expect(response.body._id).toEqual(challengeInvitationData._id)
+    expect(response.body._id).toEqual(challengeInvitationData._id.toHexString())
 })
 
 /**
@@ -50,10 +53,10 @@ test('should get invitation by id', async() => {
  * Assert challengeInvitation with correct Id.
  */
 test('should get all user as invitee challenge invitations', async() => {
-    const response = await request(app).get('/AllChallengeInvitation/myInvitations/').set({'Authentication': userData.token})
+    const response = await makeGetRequestWithToken('/AllChallengeInvitation/myInvitations/',userData.token)
     expect(response.status).toBe(200)
     expect(response.text[0].length).toBe(1)
-    expect(response.body[0]._id).toBe(challengeInvitationData._id)
+    expect(response.body[0]._id).toBe(challengeInvitationData._id.toHexString())
 })
 
 /**
@@ -62,10 +65,10 @@ test('should get all user as invitee challenge invitations', async() => {
  * Assert challengeInvitation with correct Id.
  */
 test('should get all user as creator challenge invitations', async() => {
-    const response = await request(app).get('/AllChallengeInvitationByCreator/mine/').set({'Authentication': userData.token})
+    const response = await makeGetRequestWithToken('/AllChallengeInvitationByCreator/mine/', userData.token)
     expect(response.status).toBe(200)
     expect(response.text[0].length).toBe(1)
-    expect(response.body[0]._id).toBe(challengeInvitationData._id)
+    expect(response.body[0]._id).toBe(challengeInvitationData._id.toHexString())
 })
 
 /**
@@ -75,9 +78,8 @@ test('should get all user as creator challenge invitations', async() => {
  */
 
  test('should update challenge from pending to accepted', async() => {
-     const response = await request(app).patch(`/updateChallengeStatus/${challengeInvitationData._id}/`)
-        .set({'Authentication': userData.token})
-        .send({status:'accepted'})
+     const response = await makePatchRequestWithToken(`/updateChallengeStatus/${challengeInvitationData._id}/`,
+     userData.token,{status:'accepted'})
     expect(response.status).toBe(200)
     expect(response.text).toContain('accepted')
  })
