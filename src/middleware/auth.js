@@ -6,11 +6,13 @@ const User = require('../models/Users')
 const jwt = require('jsonwebtoken')
 
 async function authMiddleWare(req, res, next){
+
     try{
         //const token = req.body.headers.Authentication
         const token = req.header('Authorization').replace('Bearer ', '')
 
         const user = await User.findOne({token: token})
+        const allUsers = await User.find({})
         req.user = user // add the user to the request 
         if (user){
             next()

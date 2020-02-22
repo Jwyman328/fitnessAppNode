@@ -4,7 +4,7 @@ const jwt  = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const userRouter = new express.Router();
 const auth = require('../../middleware/auth')
-
+const getAllUserNamesExceptCurrentUser = require('../../utils/getAllUserNamesExceptCurrentUser')
 /**
  * create and return a token when is valid sign in
  */
@@ -33,9 +33,7 @@ userRouter.post('/user/create/',async (req,res)=> {
     try{
         // give users a jwt token 
         const newUser = new User(req.body.data)
-        console.log(newUser, 'uus 1')
         newUser.generateJWTToken()
-        console.log(newUser,'2')
         res.send(newUser)
     }catch(error){
         res.status('400')
@@ -51,6 +49,19 @@ userRouter.get('/user/profile/',auth, async (req, res) => {
     }catch(error){
         res.status(400)
         .send('could not find user profile')
+    }
+})
+
+/**
+ * Return an array of all users emails except the email of the user making the request.
+ */
+userRouter.get('/user/allUsers/',auth, async (req, res) => {
+    try{
+        const allUserNamesExceptCurrentuSer = await getAllUserNamesExceptCurrentUser(req.user)
+        res.send(allUserNamesExceptCurrentuSer)
+    }catch(error){
+        res.status(400)
+        .send('could not find any users')
     }
 })
 
