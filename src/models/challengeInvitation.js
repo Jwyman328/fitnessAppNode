@@ -4,6 +4,9 @@ const ChallengeInvitation = mongoose.model('ChallengeInvitation', {
     creator:{
         type:String,
     },
+    relatedChallengeId: {
+        type:String
+    },
     invitee:{
         type:String,
     },

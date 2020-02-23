@@ -57,8 +57,8 @@ userRouter.get('/user/profile/',auth, async (req, res) => {
  */
 userRouter.get('/user/allUsers/',auth, async (req, res) => {
     try{
-        const allUserNamesExceptCurrentuSer = await getAllUserNamesExceptCurrentUser(req.user)
-        res.send(allUserNamesExceptCurrentuSer)
+        const allUserNamesExceptCurrentUser = await getAllUserNamesExceptCurrentUser(req.user)
+        res.send(allUserNamesExceptCurrentUser)
     }catch(error){
         res.status(400)
         .send('could not find any users')

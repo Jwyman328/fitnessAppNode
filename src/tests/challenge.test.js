@@ -1,6 +1,7 @@
 const app = require('../app')
 const {setUpUser,cleanUpUsers,setUpChallenge, tearDownChallenge } = require('./utilities/setUp')
 const Challenge = require('../models/challenge')
+const ChallengeInvitation = require('../models/challengeInvitation')
 const request = require('supertest')
 const userData = require('./testData/userData')
 const challengeData = require('./testData/challengeData')
@@ -28,6 +29,14 @@ test('should create challenge on post', async() => {
     expect(response.text).toContain(challengeData._id.toHexString())
 })
 
+test('challenge invitation should be created on challenge creation', async() => {
+    challengeData._id = createUniqueId()
+    const response = await makePostRequestWithToken('/challenge/', userData.token,challengeData)
+    const relatedChallengeInvitation = await ChallengeInvitation.findOne({relatedChallengeId:challengeData._id })
+    expect(relatedChallengeInvitation.title).toBe(challengeData.title)
+
+})
+
 /**
  * Get challenge by get request with id.
  * Assert challenge object returned contains same _id as create on beforeEach.
@@ -46,5 +55,5 @@ test('should get all challenges by user', async() => {
     const response = await makeGetRequestWithToken('/allChallenges/',userData.token);
     expect(response.body.length).toBe(1)
     expect(response.body[0]._id).toContain(challengeData._id)
-
 })
+

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-
-const Challenge = mongoose.model('challenge', {
+const ChallengeInvitation = require('./challengeInvitation')
+const challengeSchema = new mongoose.Schema({
     creator:{
         type:String,
     },
@@ -34,4 +34,21 @@ const Challenge = mongoose.model('challenge', {
     },
 })
 
+/**
+ * Create a challenge invitation for everyone invited to the challenge.
+ */
+challengeSchema.post('save', async function(){
+    try{
+        const challenge = this 
+        this.invitees.map(invitee => {
+            ChallengeInvitation({creator: this.creator,relatedChallengeId : this._id, invitee:invitee, challengeType: this.challengeType,
+            title:this.title, startDate: this.startDate, endDate: this.endDate, status:'pending'  }).save()
+        })
+    }
+    catch(error){
+        console.log(error)
+    }
+})
+
+const Challenge = mongoose.model('challenge', challengeSchema)
 module.exports = Challenge;
