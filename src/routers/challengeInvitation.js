@@ -49,6 +49,18 @@ ChallengeInvitationRouter.get('/AllChallengeInvitation/myInvitations/',auth, asy
     
 });
 
+// get all pending challenge invitations for user
+ChallengeInvitationRouter.get('/AllChallengeInvitation/myInvitations/pending',auth, async(req, res) => {
+    try{
+        const allChallengeInvitation = await ChallengeInvitation.find({invitee:req.user._id,status:'pending'});
+        res.send(allChallengeInvitation);
+    }catch(error){
+        res.status(400);
+        res.send('error fetching challenge invitations');
+    }
+    
+});
+
 // get invitation by creator
 ChallengeInvitationRouter.get('/AllChallengeInvitationByCreator/mine/',auth, async(req, res) => {
     try{

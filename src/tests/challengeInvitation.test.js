@@ -83,3 +83,13 @@ test('should get all user as creator challenge invitations', async() => {
     expect(response.status).toBe(200)
     expect(response.text).toContain('accepted')
  })
+
+/**
+ * Get all pending challenge invitations '/AllChallengeInvitation/myInvitations/pending'
+ */
+test('should get all user invitee challenge invitations that are pending', async() => {
+    const response = await makeGetRequestWithToken('/AllChallengeInvitation/myInvitations/pending', userData.token)
+    expect(response.status).toBe(200)
+    expect(response.text[0].length).toBe(1)
+    expect(response.body[0]._id).toBe(challengeInvitationData._id.toHexString())
+})
