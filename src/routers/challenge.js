@@ -3,10 +3,15 @@ const auth = require('../middleware/auth')
 const challengeRouter = new express.Router();
 const Challenge = require('../models/challenge')
 
+/**
+ * Create a challenge.
+ * 
+ * This Challenge creation will also create all individual challenge invitations for 
+ * all invitees.
+ */
 challengeRouter.post('/challenge/',auth, async(req, res) => {
     try{
-        console.log(req.body)
-        req.body.creator = req.user._id;
+        req.body.creator = req.user.email;
         const newChallenge = await new Challenge(req.body);
         const savedChallenge = await newChallenge.save();
         res.send(`challenge created: ${savedChallenge} `)

@@ -13,7 +13,7 @@ const ActivityPoints = mongoose.model('ActivityPoint',{
         type:Number,
         default:0,
         min:0,
-        max:10,
+        max:100000,
     },
     workoutPoints:{
         type:Number,

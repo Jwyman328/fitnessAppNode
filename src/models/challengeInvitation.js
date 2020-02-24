@@ -29,6 +29,7 @@ const ChallengeInvitation = mongoose.model('ChallengeInvitation', {
     },
     endDate: {
         type: Date,
+        default: new Date(),
     },
     status:{
         type:'String',

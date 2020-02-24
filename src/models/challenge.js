@@ -31,6 +31,7 @@ const challengeSchema = new mongoose.Schema({
     },
     endDate: {
         type: Date,
+        default: new Date(),
     },
 })
 

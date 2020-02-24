@@ -52,7 +52,7 @@ ChallengeInvitationRouter.get('/AllChallengeInvitation/myInvitations/',auth, asy
 // get all pending challenge invitations for user
 ChallengeInvitationRouter.get('/AllChallengeInvitation/myInvitations/pending',auth, async(req, res) => {
     try{
-        const allChallengeInvitation = await ChallengeInvitation.find({invitee:req.user._id,status:'pending'});
+        const allChallengeInvitation = await ChallengeInvitation.find({invitee:req.user.email,status:'pending'});
         res.send(allChallengeInvitation);
     }catch(error){
         res.status(400);
@@ -78,12 +78,66 @@ ChallengeInvitationRouter.get('/AllChallengeInvitationByCreator/mine/',auth, asy
 // body json should be like {"status": "accepted"}
 ChallengeInvitationRouter.patch('/updateChallengeStatus/:id/',auth, async(req,res)=> {
     try{
-        const challengeInvitation = await ChallengeInvitation.findOneAndUpdate({_id: req.params.id,creator:req.user._id }, req.body,{new:true, runValidators:true});
+        //creator:req.user._id 
+        const challengeInvitation = await ChallengeInvitation.findOneAndUpdate({_id: req.params.id}, req.body,{new:true, runValidators:true});
         res.send(`updated, new challenge invitation: ${challengeInvitation}`);
     }catch(error){
         res.send(`error updating invitation with id :${req.params.id}`);
     }
 })
+
+// get all challenges that the user has accepted that are past todays date
+
+ChallengeInvitationRouter.get('/pastChallenges/', auth, async(req,res) => {
+    try{
+        const challengeInvitation = await ChallengeInvitation.find({invitee: req.user.email,status:'accepted',
+         endDate: {$lte: new Date().toISOString()}})
+         res.send(challengeInvitation)
+    }catch(error){
+        res.send(error)
+
+    }
+})
+
+//get all past challenges
+ChallengeInvitationRouter.get('/pastChallenges/', auth, async(req,res) => {
+    try{
+        const pastChallenges = await ChallengeInvitation.find({invitee: req.user.email,status:'accepted',
+         endDate: {$lte: new Date().toISOString()}})
+         res.send(pastChallenges)
+    }catch(error){
+        res.send(error)
+
+    }
+})
+
+// get all current challenges 
+ChallengeInvitationRouter.get('/currentChallenges/', auth, async(req,res) => {
+    try{
+        const currentChallenges = await ChallengeInvitation.find({invitee: req.user.email,status:'accepted',
+        startDate: {$lte: new Date().toISOString()},
+         endDate: {$gte: new Date().toISOString()}})
+         res.send(currentChallenges)
+    }catch(error){
+        res.send(error)
+
+    }
+})
+
+// get all future challenges 
+ChallengeInvitationRouter.get('/futureChallenges/', auth, async(req,res) => {
+    try{
+        const currentChallenges = await ChallengeInvitation.find({invitee: req.user.email,status:'accepted',
+        startDate: {$gte: new Date().toISOString()},
+         endDate: {$gte: new Date().toISOString()}})
+         res.send(currentChallenges)
+    }catch(error){
+        res.send(error)
+
+    }
+})
+
+
 
 module.exports = ChallengeInvitationRouter;
 

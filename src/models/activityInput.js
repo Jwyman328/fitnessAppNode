@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
+const createActivityPointFromActivityInput = require('../utils/createActivityPointFromActivityInput')
 
-const ActivityInput = mongoose.model('ActivityInput',{
+const ActivityPoints = require('./activityPoints')
+const ActivityInputSchema = new mongoose.Schema({
     user: {
         type:String,
         required:true,
@@ -54,5 +56,20 @@ const ActivityInput = mongoose.model('ActivityInput',{
     }
 
 })
+
+/**
+ * Create a input point activity after activity input creatation
+ */
+ActivityInputSchema.post('save', async function(){
+    try{
+        await createActivityPointFromActivityInput(this)
+    }
+    catch(error){
+        console.log(error)
+    }
+})
+
+const ActivityInput = mongoose.model('ActivityInput', ActivityInputSchema)
+
 
 module.exports = ActivityInput;
