@@ -44,4 +44,17 @@ activityInputRouter.get('/allActivityInputs/',auth, async(req, res) => {
     }
 })
 
+//update activity input by id 
+activityInputRouter.patch('/activityInput/:id/',auth, async(req,res)=> {
+    try{
+        //creator:req.user._id 
+        const activityInputUpdate = await ActivityInput.findOneAndUpdate({_id: req.params.id}, req.body.newData,{new:true, runValidators:true});
+        res.send(`updated, activityInput: ${activityInputUpdate}`);
+    }catch(error){
+        res.status(400)
+        console.log(error)
+        res.send(`error updating activity input with id :${req.params.id}`);
+    }
+})
+
 module.exports = activityInputRouter;
