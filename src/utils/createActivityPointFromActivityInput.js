@@ -17,7 +17,7 @@ async function createActivityPointFromActivityInput(activityInput){
     const sumArray = arr => arr.reduce((a,b) => a + b, 0)
     const totalPoints = sumArray([sleepPoints,workoutPoints,waterPoints,cleanEatingPoints,stepPoints])
     
-    await ActivityPoints({user:activityInput.user, date:activityInput.date, sleepPoints:sleepPoints,
+    await ActivityPoints({user:activityInput.user, activityInput_id: activityInput._id, date:activityInput.date, sleepPoints:sleepPoints,
         workoutPoints:workoutPoints, waterPoints:waterPoints, cleanEatingPoints:cleanEatingPoints,
         stepPoints:stepPoints,totalPoints:totalPoints
        }).save()

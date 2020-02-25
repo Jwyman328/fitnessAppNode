@@ -4,6 +4,10 @@ const ActivityPoints = mongoose.model('ActivityPoint',{
     user:{
         type:String,
     },
+    activityInput_id: {
+        type:String,
+        required:true
+    },
     date: {
         type:Date,
         required:true,
