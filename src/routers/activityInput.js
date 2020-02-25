@@ -2,7 +2,7 @@ const express = require('express');
 const activityInputRouter = new express.Router();
 const ActivityInput = require('../models/activityInput')
 const auth = require('../middleware/auth')
-
+const  updateActivityPointfromActivityInput = require('../utils/updateActivityPointFromActivityInput')
 activityInputRouter.post('/activityInput/',auth, async(req,res) => {
     try{
         req.body.user = req.user._id
@@ -49,6 +49,8 @@ activityInputRouter.patch('/activityInput/:id/',auth, async(req,res)=> {
     try{
         //creator:req.user._id 
         const activityInputUpdate = await ActivityInput.findOneAndUpdate({_id: req.params.id}, req.body.newData,{new:true, runValidators:true});
+        // update the corresponding point model too 
+        const updatePointModel = await updateActivityPointfromActivityInput(activityInputUpdate)
         res.send(`updated, activityInput: ${activityInputUpdate}`);
     }catch(error){
         res.status(400)
