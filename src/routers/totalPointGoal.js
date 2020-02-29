@@ -29,6 +29,21 @@ totalPointGoalRouter.get('/totalPointGoal/:id/',auth, async(req, res) => {
     }
 });
 
+// delete goal by id 
+totalPointGoalRouter.delete('/totalPointGoal/:id/',auth, async(req, res) => {
+    try{
+        const totalPointGoalDelete = await TotalPointGoal.findOneAndDelete({_id:req.params.id, user:req.user._id });
+        if (totalPointGoalDelete){
+            res.send(`goal deleted successfully`);
+        }else{
+            res.send(`could not delete total point goal with ${totalPointGoal}`)
+        }
+    }catch(error){
+        res.status(400)
+        res.send(`error deleting point goal with id ${req.params.id}`)
+    }
+});
+
 // get all goals by user
 totalPointGoalRouter.get('/allTotalPointGoal/',auth, async(req,res) => {
     try{
@@ -60,6 +75,18 @@ totalPointGoalRouter.get('/futureGoals/', auth, async(req,res) => {
          res.send(currentGoals)
     }catch(error){
         res.send(error)
+    }
+})
+
+//get all past goals
+totalPointGoalRouter.get('/pastGoals/', auth, async(req,res) => {
+    try{
+        const pastGoals = await TotalPointGoal.find({user: req.user._id,
+            goalEndDate: {$lte: new Date().toISOString()}})
+        res.send(pastGoals)
+    }catch(error){
+        res.send(error)
+
     }
 })
 
