@@ -133,7 +133,6 @@ ChallengeInvitationRouter.get('/futureChallenges/', auth, async(req,res) => {
          res.send(currentChallenges)
     }catch(error){
         res.send(error)
-
     }
 })
 

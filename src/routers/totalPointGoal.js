@@ -40,4 +40,27 @@ totalPointGoalRouter.get('/allTotalPointGoal/',auth, async(req,res) => {
     }
 })
 
+totalPointGoalRouter.get('/currentGoals/', auth,async(req,res) => {
+    try{
+        const currentGoals = await TotalPointGoal.find({user: req.user._id,
+        goalStartDate: {$lte: new Date().toISOString()},
+        goalEndDate: {$gte: new Date().toISOString()}})
+         res.send(currentGoals)
+    }catch(error){
+        res.send(error)
+
+    }
+})
+
+totalPointGoalRouter.get('/futureGoals/', auth, async(req,res) => {
+    try{
+        const currentGoals = await TotalPointGoal.find({user: req.user._id,
+        goalStartDate: {$gte: new Date().toISOString()},
+        goalEndDate: {$gte: new Date().toISOString()}})
+         res.send(currentGoals)
+    }catch(error){
+        res.send(error)
+    }
+})
+
 module.exports = totalPointGoalRouter;
