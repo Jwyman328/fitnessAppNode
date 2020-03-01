@@ -35,7 +35,7 @@ activityInputRouter.get('/activityInput/:id/',auth, async(req, res) => {
 // get all of a user's activity inputs
 activityInputRouter.get('/allActivityInputs/',auth, async(req, res) => {
     try{
-        const allActivityInputs = await ActivityInput.find({user: req.user.id});
+        const allActivityInputs = await ActivityInput.find({user: req.user._id}); 
         // return value even if empty 
         res.send(allActivityInputs)
     }catch(error){
@@ -58,5 +58,7 @@ activityInputRouter.patch('/activityInput/:id/',auth, async(req,res)=> {
         res.send(`error updating activity input with id :${req.params.id}`);
     }
 })
+
+
 
 module.exports = activityInputRouter;

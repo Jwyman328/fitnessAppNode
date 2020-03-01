@@ -2,6 +2,7 @@ const express = require('express')
 const auth = require('../middleware/auth')
 const ActivityPoint = require('../models/activityPoints')
 const activityPointRouter = new express.Router()
+const CalculateTotalGoalPoints = require('../utils/calculateTotalGoalPoints')
 
 activityPointRouter.post('/activityPoint/', auth, async(req,res) => {
     try{
@@ -47,6 +48,24 @@ activityPointRouter.get('/allActivityPoints/mine/',auth, async(req,res)=>{
     }catch(error){
         res.status(400)
         res.send('Error fetching all activity point')
+    }
+})
+
+//get point total for a goal with itrs start date and end date 
+// return total amount of points during these dates
+activityPointRouter.get('/goalPoints/:goalStartDate/:goalEndDate/',auth, async(req, res) => {
+    try{
+        const allPointInputs = await ActivityPoint.find({user: req.user._id,
+        date: {$gte: new Date(req.params.goalStartDate).toISOString(), $lte: new Date(req.params.goalEndDate).toISOString()}});
+       // date: {}});
+        // return value even if empty 
+        // add up all total points totalPoints
+       const totalPointForDateRange =  CalculateTotalGoalPoints(allPointInputs)
+
+        res.send({totalPointForDateRange:totalPointForDateRange})
+    }catch(error){
+        res.status(404)
+        res.send("error fetch goal activity points")
     }
 })
 
