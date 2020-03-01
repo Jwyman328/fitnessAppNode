@@ -45,6 +45,9 @@ challengeSchema.post('save', async function(){
             ChallengeInvitation({creator: this.creator,relatedChallengeId : this._id, invitee:invitee, challengeType: this.challengeType,
             title:this.title, startDate: this.startDate, endDate: this.endDate, status:'pending'  }).save()
         })
+        //create a challenge invitation for the creator but with a status of accepted
+        ChallengeInvitation({creator: this.creator,relatedChallengeId : this._id, invitee:this.creator, challengeType: this.challengeType,
+            title:this.title, startDate: this.startDate, endDate: this.endDate, status:'accepted'  }).save()
     }
     catch(error){
         console.log(error)
