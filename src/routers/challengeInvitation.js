@@ -91,7 +91,7 @@ ChallengeInvitationRouter.patch('/updateChallengeStatus/:id/',auth, async(req,re
 ChallengeInvitationRouter.get('/pastChallenges/', auth, async(req,res) => {
     try{
         const challengeInvitation = await ChallengeInvitation.find({invitee: req.user.email,status:'accepted',
-         endDate: {$lte: new Date().toISOString()}}).sort('endDate')
+         endDate: {$lte: new Date().toISOString()}}).sort('-endDate')
          res.send(challengeInvitation)
     }catch(error){
         res.send(error)
