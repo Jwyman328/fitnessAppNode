@@ -70,5 +70,17 @@ activityPointRouter.get('/goalPoints/:goalStartDate/:goalEndDate/',auth, async(r
     }
 })
 
+//get todays points 
+activityPointRouter.get('/todaysPoints/',auth, async(req,res)=>{
+    try{
+        const today = new Date().toISOString().split('T')[0]
+        const todayActivityPoints = await ActivityPoint.find({user:req.user._id, date: today});
+        res.send(todayActivityPoints);
+    }catch(error){
+        res.status(400)
+        res.send('Error fetching all activity point')
+    }
+})
+
 
 module.exports = activityPointRouter
