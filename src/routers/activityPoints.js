@@ -37,7 +37,7 @@ activityPointRouter.get('/activityPoint/:id/',auth, async(req,res)=>{
 //find all activity points for user 
 activityPointRouter.get('/allActivityPoints/mine/',auth, async(req,res)=>{
     try{
-        const allUserActivityPoints = await ActivityPoint.find({user:req.user._id});
+        const allUserActivityPoints = await ActivityPoint.find({user:req.user._id}).sort('-date');
         //if activity point found.
         if (allUserActivityPoints){
             res.send(allUserActivityPoints);
@@ -57,7 +57,7 @@ activityPointRouter.get('/goalPoints/:goalStartDate/:goalEndDate/',auth, async(r
     try{
         const allPointInputs = await ActivityPoint.find({user: req.user._id,
         date: {$gte: new Date(req.params.goalStartDate).toISOString(), 
-            $lte: new Date(req.params.goalEndDate).toISOString()}});
+            $lte: new Date(req.params.goalEndDate).toISOString()}}).sort('date');
        // date: {}});
         // return value even if empty 
         // add up all total points totalPoints
