@@ -3,6 +3,7 @@ const activityInputRouter = new express.Router();
 const ActivityInput = require('../models/activityInput')
 const auth = require('../middleware/auth')
 const  updateActivityPointfromActivityInput = require('../utils/updateActivityPointFromActivityInput')
+
 activityInputRouter.post('/activityInput/',auth, async(req,res) => {
     try{
         req.body.user = req.user._id

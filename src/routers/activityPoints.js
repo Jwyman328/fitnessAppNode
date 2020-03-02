@@ -56,7 +56,8 @@ activityPointRouter.get('/allActivityPoints/mine/',auth, async(req,res)=>{
 activityPointRouter.get('/goalPoints/:goalStartDate/:goalEndDate/',auth, async(req, res) => {
     try{
         const allPointInputs = await ActivityPoint.find({user: req.user._id,
-        date: {$gte: new Date(req.params.goalStartDate).toISOString(), $lte: new Date(req.params.goalEndDate).toISOString()}});
+        date: {$gte: new Date(req.params.goalStartDate).toISOString(), 
+            $lte: new Date(req.params.goalEndDate).toISOString()}});
        // date: {}});
         // return value even if empty 
         // add up all total points totalPoints

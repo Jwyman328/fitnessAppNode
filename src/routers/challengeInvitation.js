@@ -91,7 +91,7 @@ ChallengeInvitationRouter.patch('/updateChallengeStatus/:id/',auth, async(req,re
 ChallengeInvitationRouter.get('/pastChallenges/', auth, async(req,res) => {
     try{
         const challengeInvitation = await ChallengeInvitation.find({invitee: req.user.email,status:'accepted',
-         endDate: {$lte: new Date().toISOString()}})
+         endDate: {$lte: new Date().toISOString()}}).sort('endDate')
          res.send(challengeInvitation)
     }catch(error){
         res.send(error)
@@ -103,7 +103,7 @@ ChallengeInvitationRouter.get('/pastChallenges/', auth, async(req,res) => {
 ChallengeInvitationRouter.get('/pastChallenges/', auth, async(req,res) => {
     try{
         const pastChallenges = await ChallengeInvitation.find({invitee: req.user.email,status:'accepted',
-         endDate: {$lte: new Date().toISOString()}})
+         endDate: {$lte: new Date().toISOString()}}).sort('-endDate')
          res.send(pastChallenges)
     }catch(error){
         res.send(error)
@@ -116,7 +116,7 @@ ChallengeInvitationRouter.get('/currentChallenges/', auth, async(req,res) => {
     try{
         const currentChallenges = await ChallengeInvitation.find({invitee: req.user.email,status:'accepted',
         startDate: {$lte: new Date().toISOString()},
-         endDate: {$gte: new Date().toISOString()}})
+         endDate: {$gte: new Date().toISOString()}}).sort('endDate')
          res.send(currentChallenges)
     }catch(error){
         res.send(error)
@@ -127,10 +127,10 @@ ChallengeInvitationRouter.get('/currentChallenges/', auth, async(req,res) => {
 // get all future challenges 
 ChallengeInvitationRouter.get('/futureChallenges/', auth, async(req,res) => {
     try{
-        const currentChallenges = await ChallengeInvitation.find({invitee: req.user.email,status:'accepted',
-        startDate: {$gte: new Date().toISOString()},
-         endDate: {$gte: new Date().toISOString()}})
-         res.send(currentChallenges)
+        const currentChallenges = await ChallengeInvitation.find({invitee: req.user.email,
+            status:'accepted',startDate: {$gte: new Date().toISOString()},
+            endDate: {$gte: new Date().toISOString()}}).sort('startDate')
+        res.send(currentChallenges)
     }catch(error){
         res.send(error)
     }
