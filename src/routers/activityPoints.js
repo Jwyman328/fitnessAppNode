@@ -82,5 +82,21 @@ activityPointRouter.get('/todaysPoints/',auth, async(req,res)=>{
     }
 })
 
+// get points for past month 
+activityPointRouter.get('/pastMonthPoints/',auth, async(req, res) => {
+    try{
+        const monthStart = new Date()
+        monthStart.setMonth(monthStart.getMonth() - 1);
+        
+        const totalPointForDateRange = await ActivityPoint.find({user: req.user._id,
+        date: {$gte: monthStart.toISOString(), 
+            $lte: new Date().toISOString()}}).sort('date');
+
+        res.send(totalPointForDateRange)
+    }catch(error){
+        res.status(404)
+        res.send("error fetch goal activity points")
+    }
+})
 
 module.exports = activityPointRouter
