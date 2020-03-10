@@ -12,7 +12,7 @@ async function authMiddleWare(req, res, next){
         const token = req.header('Authorization').replace('Bearer ', '')
 
         const user = await User.findOne({token: token})
-        const allUsers = await User.find({})
+        //const allUsers = await User.find({})
         req.user = user // add the user to the request 
         if (user){
             next()

@@ -1,0 +1,20 @@
+version: "3.7"
+
+services:
+    app:
+        container_name: docker-node-mongo
+        #image: node: 12.14.1
+        restart: always
+        build: .
+        ports:
+            - "80:3001"
+        volumes:
+            - ./:/usr/src/backendapiman
+        links:
+            - mongo
+    mongo:
+        container_name: mongo
+        image: mongo
+        ports: 
+            - "27017:27017"
+
