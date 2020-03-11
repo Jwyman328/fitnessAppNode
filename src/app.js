@@ -24,6 +24,7 @@ app.use(challengeRouter);
 app.use(ChallengeInvitationRouter);
 
 app.get('/', (req, res) => {
+    res.status(200)
     res.send('hello world')
 })
 
