@@ -1,5 +1,6 @@
 
 require('./db/mongoose')
+const helmet = require('helmet')
 
 const express = require('express')
 const userRouter = require('./routers/authentication.js/Users')
@@ -11,6 +12,7 @@ const ChallengeInvitationRouter = require('./routers/challengeInvitation')
 var cors = require('cors')
 
 const app = express();
+app.use(helmet())
 app.use(cors())
 
 app.use(express.json());
