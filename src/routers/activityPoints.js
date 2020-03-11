@@ -14,7 +14,7 @@ activityPointRouter.post('/activityPoint/', auth, async(req,res) => {
         console.log(error)
         res.send('error trying to create activity point')
     }
-})
+}) 
 
 // find specific activity point by id
 activityPointRouter.get('/activityPoint/:id/',auth, async(req,res)=>{

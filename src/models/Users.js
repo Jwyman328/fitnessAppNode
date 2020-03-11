@@ -2,6 +2,9 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 const hash = require('bcryptjs')// hash passwords 
 const jwt = require('jsonwebtoken')
+//const redis = require('redis')
+//const redisClient = redis.createClient("redis://redis:6379")
+
 const UserSchema = new mongoose.Schema({
     email: {
         type:String,
@@ -52,13 +55,14 @@ UserSchema.pre('save', async function(next){
     
 })
 // generate a token on creation of user/ sign up
-UserSchema.methods.generateJWTToken = async function(){
+UserSchema.methods.generateJWTToken = async function(redisClient){
     try{
         const user = this
-        console.log(user,'userr')
-        const newToken = jwt.sign( {_id: user._id.toString()}, 'secrectcode')
-        //console.log(newToken gi,'nt')
+        const newToken = jwt.sign( {email: user.email.toString()}, 'secrectcode')
         user.token = newToken // add token to array of tokens.
+        
+        // set token user email to redis db
+        await redisClient.setAsync(newToken,user.email )
         await user.save()
         return newToken
     }catch(error){

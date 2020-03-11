@@ -5,9 +5,11 @@ const bcrypt = require('bcryptjs')
 const userRouter = new express.Router();
 const auth = require('../../middleware/auth')
 const getAllUserNamesExceptCurrentUser = require('../../utils/getAllUserNamesExceptCurrentUser')
+const {redisClient} = require('../../db/redisClient')
 /**
  * create and return a token when is valid sign in
  */
+
 userRouter.post('/user/login', async (req, res) => {
     try{
         // get User by email
@@ -16,7 +18,7 @@ userRouter.post('/user/login', async (req, res) => {
         const isPasswordMatching =  await bcrypt.compare(req.body.data.password, user.password)
         if (isPasswordMatching){
             // create a token for user and send it back
-            const token = await user.generateJWTToken()
+            const token = await user.generateJWTToken(redisClient)
             res.send({token:token})
         }else{
             res.status('400').send('password is invalid')
@@ -29,11 +31,10 @@ userRouter.post('/user/login', async (req, res) => {
 })
 
 userRouter.post('/user/create/',async (req,res)=> {
-    console.log(req.body.data, 'hi')
     try{
         // give users a jwt token 
         const newUser = new User(req.body.data)
-        newUser.generateJWTToken()
+        await newUser.generateJWTToken(redisClient)
         res.send(newUser)
     }catch(error){
         res.status('400')
