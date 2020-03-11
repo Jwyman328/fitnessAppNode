@@ -1,5 +1,5 @@
 
-const redisUri = process.env.REDIS_URL || "redis://redis:6379";
+const redisUri = process.env.REDISTOGO_URL || "redis://redis:6379";
 
 
 const redis = require('redis')
