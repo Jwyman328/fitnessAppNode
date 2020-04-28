@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
 
+/**
+ * Challenge Invitation Model.
+ */
 const ChallengeInvitation = mongoose.model("ChallengeInvitation", {
   creator: {
     type: String,

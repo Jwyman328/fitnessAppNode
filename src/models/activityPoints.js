@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
 
+/**
+ * Model for Activity Point.
+ */
 const ActivityPoints = mongoose.model("ActivityPoint", {
   user: {
     type: String,

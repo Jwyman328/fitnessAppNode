@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
 const calculateTotalDaysBetweenDates = require("../utils/calculateTotalDaysBetweenDates");
 
+/**
+ * Total Point Goal schema.
+ */
 const totalPointGoalSchema = new mongoose.Schema({
   user: {
     type: String,
@@ -42,7 +45,7 @@ const totalPointGoalSchema = new mongoose.Schema({
 });
 
 /**
- * Calculate total pointGoalTotal
+ * Before saving, calculate the total point goal if the goal is of type dailyGoal.
  */
 totalPointGoalSchema.pre("save", async function () {
   try {
@@ -52,7 +55,8 @@ totalPointGoalSchema.pre("save", async function () {
         totalPointGoal.goalStartDate,
         totalPointGoal.goalEndDate
       );
-      totalPointGoal.pointGoalTotal = totalPointGoal.pointGoal * totalDaysFromStartToEndDate;
+      totalPointGoal.pointGoalTotal =
+        totalPointGoal.pointGoal * totalDaysFromStartToEndDate;
     } else {
       totalPointGoal.pointGoalTotal = totalPointGoal.pointGoal;
     }

@@ -1,10 +1,11 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
-const hash = require("bcryptjs"); // hash passwords
+const hash = require("bcryptjs"); 
 const jwt = require("jsonwebtoken");
-//const redis = require('redis')
-//const redisClient = redis.createClient("redis://redis:6379")
 
+/**
+ * User model Schema.
+ */
 const UserSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -37,6 +38,10 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
+/**
+ * Before saving a newly modified password, 
+ * hash the password
+ */
 UserSchema.pre("save", async function (next) {
   try {
     const user = this;
@@ -48,11 +53,16 @@ UserSchema.pre("save", async function (next) {
     console.log("error with ");
   }
 });
-// generate a token on creation of user/ sign up
+
+/**
+ * On creation of a new user, generate a new JWT, set it to user token and start session mgmt 
+ * of current user in redis.
+ * 
+ */
 UserSchema.methods.generateJWTToken = async function (redisClient) {
   try {
     const user = this;
-    const newToken = jwt.sign({ email: user.email.toString() }, "secrectcode");
+    const newToken = jwt.sign({ email: user.email.toString() }, `${process.env.HASH_PASSWORD}`);
     user.token = newToken; // add token to array of tokens.
 
     // set token user email to redis db

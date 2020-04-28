@@ -1,5 +1,9 @@
 const mongoose = require("mongoose");
 const ChallengeInvitation = require("./challengeInvitation");
+
+/**
+ * Challenge Schema
+ */
 const challengeSchema = new mongoose.Schema({
   creator: {
     type: String,
@@ -43,7 +47,10 @@ const challengeSchema = new mongoose.Schema({
 });
 
 /**
- * Create a challenge invitation for everyone invited to the challenge.
+ * After saving the object create a challenge invitation 
+ * object for every user invited to the challenge.
+ * And, create and automatically accept the challenge invitation 
+ * for the user who created it.
  */
 challengeSchema.post("save", async function () {
   try {
@@ -60,7 +67,7 @@ challengeSchema.post("save", async function () {
         status: "pending",
       }).save();
     });
-    //create a challenge invitation for the creator but with a status of accepted
+    //*create a challenge invitation for the creator but with a status of accepted
     ChallengeInvitation({
       creator: this.creator,
       relatedChallengeId: this._id,
