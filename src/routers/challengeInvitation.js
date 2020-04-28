@@ -3,7 +3,9 @@ const auth = require("../middleware/auth");
 const ChallengeInvitation = require("../models/challengeInvitation");
 const ChallengeInvitationRouter = new express.Router();
 
-// create Invitation;
+/**
+ * Create and return a challenge invitation.
+ */
 ChallengeInvitationRouter.post(
   "/challengeInvitation/",
   auth,
@@ -21,7 +23,9 @@ ChallengeInvitationRouter.post(
   }
 );
 
-//get challenge invitation by id
+/**
+ * Return a challenge invitation created by the current user, by id.
+ */
 ChallengeInvitationRouter.get(
   "/challengeInvitation/:id/",
   auth,
@@ -47,17 +51,19 @@ ChallengeInvitationRouter.get(
   }
 );
 
-//get by user
-// req.body = {"invitee": "thisUser"}
+/**
+ * Return an array of all challengeInvitations of the current user.
+ *
+ */
 ChallengeInvitationRouter.get(
   "/AllChallengeInvitation/myInvitations/",
   auth,
   async (req, res) => {
     try {
-      const allChallengeInvitation = await ChallengeInvitation.find({
+      const allChallengeInvitationsForUser = await ChallengeInvitation.find({
         invitee: req.user._id,
       });
-      res.send(allChallengeInvitation);
+      res.send(allChallengeInvitationsForUser);
     } catch (error) {
       res.status(400);
       res.send("error fetching challenge invitations");
@@ -65,7 +71,9 @@ ChallengeInvitationRouter.get(
   }
 );
 
-// get all pending challenge invitations for user
+/**
+ * Return all challenge invitations with a status of pending for the current user.
+ */
 ChallengeInvitationRouter.get(
   "/AllChallengeInvitation/myInvitations/pending",
   auth,
@@ -83,7 +91,9 @@ ChallengeInvitationRouter.get(
   }
 );
 
-// get invitation by creator
+/**
+ * Return array of all challenge invitations created by the current user.
+ */
 ChallengeInvitationRouter.get(
   "/AllChallengeInvitationByCreator/mine/",
   auth,
@@ -100,10 +110,16 @@ ChallengeInvitationRouter.get(
   }
 );
 
-//ChangeStatus of challengeInvitation
-// use param to get ChallengeInvitation
-// use body to set value, pending, accepted or rejected
-// body json should be like {"status": "accepted"}
+
+/**
+ * Update a challenge invitation status from pending to accepted or denied.
+ * 
+ * The request body will contain status change information.
+ * Example request body:
+ * {"status": "accepted"}
+ * 
+ * @Return success message of challenge invitation status change.
+ */
 ChallengeInvitationRouter.patch(
   "/updateChallengeStatus/:id/",
   auth,
@@ -122,21 +138,9 @@ ChallengeInvitationRouter.patch(
   }
 );
 
-// get all challenges that the user has accepted that are past todays date
-ChallengeInvitationRouter.get("/pastChallenges/", auth, async (req, res) => {
-  try {
-    const challengeInvitation = await ChallengeInvitation.find({
-      invitee: req.user.email,
-      status: "accepted",
-      endDate: { $lte: new Date().toISOString() },
-    }).sort("-endDate");
-    res.send(challengeInvitation);
-  } catch (error) {
-    res.send(error);
-  }
-});
-
-//get all past challenges
+/**
+ * Return an array of all accepted challengeInvitations by the current user before today's date.
+ */
 ChallengeInvitationRouter.get("/pastChallenges/", auth, async (req, res) => {
   try {
     const pastChallenges = await ChallengeInvitation.find({
@@ -150,7 +154,9 @@ ChallengeInvitationRouter.get("/pastChallenges/", auth, async (req, res) => {
   }
 });
 
-// get all current challenges
+ /**
+  *  Return an array of all currently on going accepted challengeInvitations of the current user.
+  */
 ChallengeInvitationRouter.get("/currentChallenges/", auth, async (req, res) => {
   try {
     const currentChallenges = await ChallengeInvitation.find({
@@ -165,7 +171,9 @@ ChallengeInvitationRouter.get("/currentChallenges/", auth, async (req, res) => {
   }
 });
 
-// get all future challenges
+/**
+ * Return an array of all accepted challengeInvitations that have a future start date.
+ */
 ChallengeInvitationRouter.get("/futureChallenges/", auth, async (req, res) => {
   try {
     const currentChallenges = await ChallengeInvitation.find({

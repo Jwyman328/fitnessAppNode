@@ -22,7 +22,9 @@ challengeRouter.post("/challenge/", auth, async (req, res) => {
   }
 });
 
-// get by id
+/**
+ * Return a challenge object create by the current user, by id.
+ */
 challengeRouter.get("/challenge/:id/", auth, async (req, res) => {
   try {
     console.log({ _id: req.params.id, creator: req.user._id });
@@ -41,11 +43,12 @@ challengeRouter.get("/challenge/:id/", auth, async (req, res) => {
   }
 });
 
-//get by user
+/**
+ * Return all challenges the user is involved in.
+ */
 challengeRouter.get("/allChallenges/", auth, async (req, res) => {
   try {
     const challenges = await Challenge.find(req.body);
-    console.log(challenges);
     if (challenges === []) {
       res.send(`user does not have any challenges`);
     } else {

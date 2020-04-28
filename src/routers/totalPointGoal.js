@@ -3,6 +3,11 @@ const auth = require("../middleware/auth");
 const TotalPointGoal = require("../models/totalPointGoal");
 const totalPointGoalRouter = new express.Router();
 
+/**
+ * Create a new totalPointGoal.
+ * 
+ * @return Success message that totalPointGoal was created
+ */
 totalPointGoalRouter.post("/totalPointGoal/", auth, async (req, res) => {
   try {
     req.body.user = req.user._id;
@@ -15,6 +20,9 @@ totalPointGoalRouter.post("/totalPointGoal/", auth, async (req, res) => {
   }
 });
 
+/**
+ * Return totalPointGoal for the current user by id.
+ */
 totalPointGoalRouter.get("/totalPointGoal/:id/", auth, async (req, res) => {
   try {
     const totalPointGoal = await TotalPointGoal.findOne({
@@ -32,7 +40,11 @@ totalPointGoalRouter.get("/totalPointGoal/:id/", auth, async (req, res) => {
   }
 });
 
-// delete goal by id
+/**
+ * Delete a totalPointGoal for the current user by id.
+ * 
+ * @return success message of deletion.
+ */
 totalPointGoalRouter.delete("/totalPointGoal/:id/", auth, async (req, res) => {
   try {
     const totalPointGoalDelete = await TotalPointGoal.findOneAndDelete({
@@ -50,7 +62,9 @@ totalPointGoalRouter.delete("/totalPointGoal/:id/", auth, async (req, res) => {
   }
 });
 
-// get all goals by user
+/**
+ * Return an array of all totalPointGoals for the current user.
+ */
 totalPointGoalRouter.get("/allTotalPointGoal/", auth, async (req, res) => {
   try {
     const allPointGoals = await TotalPointGoal.find({ user: req.user._id });
@@ -61,6 +75,9 @@ totalPointGoalRouter.get("/allTotalPointGoal/", auth, async (req, res) => {
   }
 });
 
+/**
+ * Return an array of all current totalPointGoals for the current user.
+ */
 totalPointGoalRouter.get("/currentGoals/", auth, async (req, res) => {
   try {
     const currentGoals = await TotalPointGoal.find({
@@ -74,6 +91,9 @@ totalPointGoalRouter.get("/currentGoals/", auth, async (req, res) => {
   }
 });
 
+/**
+ * Return an array of all future totalPointGoals for the current user.
+ */
 totalPointGoalRouter.get("/futureGoals/", auth, async (req, res) => {
   try {
     const currentGoals = await TotalPointGoal.find({
@@ -87,7 +107,10 @@ totalPointGoalRouter.get("/futureGoals/", auth, async (req, res) => {
   }
 });
 
-//get all past goals
+
+/**
+ * Return an array of all past totalPointGoals for the current user.
+ */
 totalPointGoalRouter.get("/pastGoals/", auth, async (req, res) => {
   try {
     const pastGoals = await TotalPointGoal.find({

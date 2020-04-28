@@ -4,6 +4,11 @@ const ActivityInput = require("../models/activityInput");
 const auth = require("../middleware/auth");
 const updateActivityPointfromActivityInput = require("../utils/updateActivityPointFromActivityInput");
 
+/**
+ * Create a new activityInput.
+ *
+ * @return a success message that the input was created
+ */
 activityInputRouter.post("/activityInput/", auth, async (req, res) => {
   try {
     req.body.user = req.user._id;
@@ -17,7 +22,9 @@ activityInputRouter.post("/activityInput/", auth, async (req, res) => {
   }
 });
 
-// get individual activity input
+/**
+ * Return an individual activityInput by id.
+ */
 activityInputRouter.get("/activityInput/:id/", auth, async (req, res) => {
   try {
     const activityInput = await ActivityInput.findOne({
@@ -36,11 +43,12 @@ activityInputRouter.get("/activityInput/:id/", auth, async (req, res) => {
   }
 });
 
-// get all of a user's activity inputs
+/**
+ * Return all activity inputs of the requesting user.
+ */
 activityInputRouter.get("/allActivityInputs/", auth, async (req, res) => {
   try {
     const allActivityInputs = await ActivityInput.find({ user: req.user._id });
-    // return value even if empty
     res.send(allActivityInputs);
   } catch (error) {
     res.status(404);
@@ -48,7 +56,9 @@ activityInputRouter.get("/allActivityInputs/", auth, async (req, res) => {
   }
 });
 
-//update activity input by id
+/**
+ * Update a specific activityInput by its id. 
+ */
 activityInputRouter.patch("/activityInput/:id/", auth, async (req, res) => {
   try {
     //creator:req.user._id
