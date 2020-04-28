@@ -58,7 +58,6 @@ const ActivityInputSchema = new mongoose.Schema({
  * Create a input point activity after activity input creatation
  */
 ActivityInputSchema.post("save", async function () {
-  console.log("this was hit");
   try {
     await createActivityPointFromActivityInput(this);
   } catch (error) {

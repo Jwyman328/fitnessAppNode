@@ -1,9 +1,10 @@
 const User = require("../models/Users");
 
 /**
- * Return an array of all user emails except the current user.
+ * Create an array of all users not including the current user.
  *
- * @param {Object} currentUser -- User making the request.
+ * @param {Object} currentUser   Current User making the request
+ * @return {Array}               All user emails not including the current user
  */
 async function getAllUserNamesExceptCurrentUser(currentUser) {
   const allUsers = await User.find({});

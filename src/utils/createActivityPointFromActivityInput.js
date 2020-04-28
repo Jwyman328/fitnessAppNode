@@ -1,16 +1,28 @@
 const ActivityPoints = require("../models/activityPoints");
+
 const {
   sleepTimeToPoints,
   cleanEatingToPoints,
   workoutInputToPoints,
   waterOzToPoints,
   stepsToPoints,
-} = require("./activityToPointFunc");
+} = require("./activityToPointHelperFunctions");
+
+const { produceSingleSum } = require("./produceSingleSum");
 
 /**
- * Create a activityPoint object from an activityInput object.
+ * Create an activityPoint object from an activityInput object.
  *
- * @param {Object} activityInput -- ActivityInput object
+ * All inputs are in specific measurement values,
+ * sleep in hours
+ * steps in step count
+ * eating healthy in boolean.
+ * etc.
+ *
+ * They must all be converted into a numeric point value.
+ *
+ * @param {Object} activityInput  ActivityInput object with activity specific measurement values.
+ * @return {Object}               ActivityPoints object with point value for each activity.
  */
 
 async function createActivityPointFromActivityInput(activityInput) {
@@ -23,8 +35,7 @@ async function createActivityPointFromActivityInput(activityInput) {
   const cleanEatingPoints = cleanEatingToPoints(activityInput.cleanEating);
   const stepPoints = stepsToPoints(activityInput.steps);
 
-  const sumArray = (arr) => arr.reduce((a, b) => a + b, 0);
-  const totalPoints = sumArray([
+  const sumPointTotalForAllActivities = produceSingleSum([
     sleepPoints,
     workoutPoints,
     waterPoints,
@@ -41,7 +52,7 @@ async function createActivityPointFromActivityInput(activityInput) {
     waterPoints: waterPoints,
     cleanEatingPoints: cleanEatingPoints,
     stepPoints: stepPoints,
-    totalPoints: totalPoints,
+    totalPoints: sumPointTotalForAllActivities,
   }).save();
 }
 

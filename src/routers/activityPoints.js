@@ -2,7 +2,7 @@ const express = require("express");
 const auth = require("../middleware/auth");
 const ActivityPoint = require("../models/activityPoints");
 const activityPointRouter = new express.Router();
-const CalculateTotalGoalPoints = require("../utils/calculateTotalGoalPoints");
+const CalculateTotalPointsFromActivityInputs = require("../utils/calculateTotalGoalPoints");
 
 activityPointRouter.post("/activityPoint/", auth, async (req, res) => {
   try {
@@ -70,10 +70,8 @@ activityPointRouter.get(
           $lte: new Date(req.params.goalEndDate).toISOString(),
         },
       }).sort("date");
-      // date: {}});
-      // return value even if empty
       // add up all total points totalPoints
-      const totalPointForDateRange = CalculateTotalGoalPoints(allPointInputs);
+      const totalPointForDateRange = CalculateTotalPointsFromActivityInputs(allPointInputs);
 
       res.send({ totalPointForDateRange: totalPointForDateRange });
     } catch (error) {

@@ -5,8 +5,24 @@ const {
   workoutInputToPoints,
   waterOzToPoints,
   stepsToPoints,
-} = require("./activityToPointFunc");
+} = require("./activityToPointHelperFunctions");
 
+const { produceSingleSum } = require("./produceSingleSum");
+
+/**
+ * Update an activityPoint object from an activityInput object update.
+ *
+ * All inputs are in specific measurement values,
+ * sleep in hours
+ * steps in step count
+ * eating healthy in boolean.
+ * etc.
+ *
+ * They must all be converted into a numeric point value.
+ *
+ * @param {Object} activityInput  ActivityInput object with activity specific measurement values.
+ * @return {Object}               ActivityPoints object with point value for each activity.
+ */
 async function updateActivityPointfromActivityInput(activityInput) {
   const sleepPoints = sleepTimeToPoints(activityInput.hoursOfSleep);
   const workoutPoints = workoutInputToPoints(
@@ -17,8 +33,7 @@ async function updateActivityPointfromActivityInput(activityInput) {
   const cleanEatingPoints = cleanEatingToPoints(activityInput.cleanEating);
   const stepPoints = stepsToPoints(activityInput.steps);
 
-  const sumArray = (arr) => arr.reduce((a, b) => a + b, 0);
-  const totalPoints = sumArray([
+  const sumPointTotalForAllActivities = produceSingleSum([
     sleepPoints,
     workoutPoints,
     waterPoints,
@@ -35,7 +50,7 @@ async function updateActivityPointfromActivityInput(activityInput) {
     waterPoints: waterPoints,
     cleanEatingPoints: cleanEatingPoints,
     stepPoints: stepPoints,
-    totalPoints: totalPoints,
+    totalPoints: sumPointTotalForAllActivities,
   };
 
   await ActivityPoints.findOneAndUpdate(
