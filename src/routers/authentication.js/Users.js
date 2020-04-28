@@ -6,10 +6,10 @@ const userRouter = new express.Router();
 const auth = require('../../middleware/auth')
 const getAllUserNamesExceptCurrentUser = require('../../utils/getAllUserNamesExceptCurrentUser')
 const {redisClient} = require('../../db/redisClient')
+
 /**
  * create and return a token when is valid sign in
  */
-
 userRouter.post('/user/login', async (req, res) => {
     try{
         // get User by email
