@@ -56,4 +56,4 @@ async function createActivityPointFromActivityInput(activityInput) {
   }).save();
 }
 
-module.exports = createActivityPointFromActivityInput;
+module.exports = {createActivityPointFromActivityInput};

@@ -3,7 +3,7 @@ const app = require('../app')
 const Users = require('../models/Users')
 const {setUpUser, setUpActivityInput, setUpActivityPoints,cleanUpUsers, 
     tearDownActivityInput,tearDownActivityPoints } = require('./utilities/setUp')
-let userData = require('../tests/testData/userData')
+let userData = require('./testData/userData')
 const { makePostRequestWithoutToken,makeGetRequestWithToken} = require('./utilities/testHelpFunctions')
 let myUser;
 

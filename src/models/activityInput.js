@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 
-const createActivityPointFromActivityInput = require("../../utils/createActivityPointFromActivityInput");
+const {createActivityPointFromActivityInput} = require("../utils/createActivityPointFromActivityInput");
 
 /**
  * Schema for ActivityInput model
