@@ -2,7 +2,9 @@ const express = require("express");
 const auth = require("../middleware/auth");
 const challengeRouter = new express.Router();
 const Challenge = require("../models/challenge");
-
+//const checkIsNullResponse = require('../playground/checkIsNullResponse')
+const checkUpDateTargetFound = require("../playground/checkUpDateTargetFound");
+const UpdateTargetNotFoundError = require('../playground/updateTargetNotFoundError')
 /**
  * Create a challenge.
  *
@@ -60,4 +62,65 @@ challengeRouter.get("/allChallenges/", auth, async (req, res) => {
   }
 });
 
+const newChalData = {creator: 'User._id',
+  challengeType: "Sleep",
+  title: "testChallenge",
+  participants: ["testFriend"],
+  invitees: ["testFriend"],
+  startDate: new Date(),
+  endDate: new Date()}
+
+/// tsting area playground
+function forgotPassword(user) {
+  return async (email, urlName) => {
+    return new Promise(async (resolve, reject) => {
+      try{
+        const upDateTargetNotFoundError = new UpdateTargetNotFoundError(
+          "user",
+          email
+        )
+        const targetOrg = await Challenge.findOne(
+          { urlName:'find' },
+          function (err, results){
+            checkUpDateTargetFound(err, results, reject,upDateTargetNotFoundError )
+          }
+        );
+        //const emailRegex = email_util.emailRegex(email);
+       
+        const targetUser = await Challenge.findOne(
+          {},
+          function (err, results){
+            checkUpDateTargetFound(err, results, reject,upDateTargetNotFoundError )
+          }
+        );
+       // const token = resetUserToken(targetUser);
+        return resolve('token') ; // would be token obj
+      }catch(e){
+        console.log('caught')
+        reject(e)
+      }
+    })  
+  };
+} 
+
+const arrayOfDbReq = {
+  forgotPassword: forgotPassword
+};
+
+challengeRouter.get("/mongoTest", async (req, res) => {
+  try {
+    console.log('here')
+    const waited = await arrayOfDbReq.forgotPassword({ name: "joe" })(
+      "email",
+      "urlName"
+    )
+    console.log(waited, "kk");
+  } catch (e) {
+    console.log(e, "the error");
+  }
+
+  res.send("hi");
+});
+
 module.exports = challengeRouter;
+//UpdateTargetNotFoundError { name: 'UpdateTargetNotFoundError' } the error

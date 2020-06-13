@@ -8,7 +8,8 @@ const {
   stepsToPoints,
 } = require("./activityToPointHelperFunctions");
 
-const { produceSingleSum } = require("./produceSingleSum");
+//const  produceSingleSum  = require("./produceSingleSum");
+const produceSingleSum = (arrayOfNumbers) => arrayOfNumbers.reduce((a, b) => a + b, 0);
 
 /**
  * Create an activityPoint object from an activityInput object.
