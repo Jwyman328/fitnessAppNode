@@ -11,7 +11,7 @@ const UpdateTargetNotFoundError = require('../playground/updateTargetNotFoundErr
  * This Challenge creation will also create all individual challenge invitations for
  * all invitees.
  */
-challengeRouter.post("/challenge/", auth, async (req, res) => {
+challengeRouter.post("/challenges/", auth, async (req, res) => {
   try {
     req.body.creator = req.user.email;
     const newChallenge = await new Challenge(req.body);
@@ -27,7 +27,7 @@ challengeRouter.post("/challenge/", auth, async (req, res) => {
 /**
  * Return a challenge object create by the current user, by id.
  */
-challengeRouter.get("/challenge/:id/", auth, async (req, res) => {
+challengeRouter.get("/challenges/:id/", auth, async (req, res) => {
   try {
     console.log({ _id: req.params.id, creator: req.user._id });
     const challenge = await Challenge.findOne({
@@ -48,7 +48,7 @@ challengeRouter.get("/challenge/:id/", auth, async (req, res) => {
 /**
  * Return all challenges the user is involved in.
  */
-challengeRouter.get("/allChallenges/", auth, async (req, res) => {
+challengeRouter.get("/challenges/", auth, async (req, res) => {
   try {
     const challenges = await Challenge.find(req.body);
     if (challenges === []) {
