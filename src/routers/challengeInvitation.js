@@ -7,7 +7,7 @@ const ChallengeInvitationRouter = new express.Router();
  * Create and return a challenge invitation.
  */
 ChallengeInvitationRouter.post(
-  "/challengeInvitation/",
+  "/",
   auth,
   async (req, res) => {
     try {
@@ -30,7 +30,7 @@ ChallengeInvitationRouter.post(
  *
  */
 ChallengeInvitationRouter.get(
-  "/challengeInvitation/", //challengeInvitation
+  "/", //challengeInvitation
   auth,
   async (req, res) => {
     try {
@@ -49,32 +49,13 @@ ChallengeInvitationRouter.get(
  * Return all challenge invitations with a status of pending for the current user.
  */
 ChallengeInvitationRouter.get(
-  "/challengeInvitation/pending",
+  "/pending",
   auth,
   async (req, res) => {
     try {
       const allChallengeInvitation = await ChallengeInvitation.find({
         invitee: req.user.email,
         status: "pending",
-      });
-      res.send(allChallengeInvitation);
-    } catch (error) {
-      res.status(400);
-      res.send("error fetching challenge invitations");
-    }
-  }
-);
-
-/**
- * Return array of all challenge invitations created by the current user.
- */
-ChallengeInvitationRouter.get(
-  "/AllChallengeInvitationByCreator/mine/",
-  auth,
-  async (req, res) => {
-    try {
-      const allChallengeInvitation = await ChallengeInvitation.find({
-        creator: req.user._id,
       });
       res.send(allChallengeInvitation);
     } catch (error) {
@@ -95,7 +76,7 @@ ChallengeInvitationRouter.get(
  * @Return success message of challenge invitation status change.
  */
 ChallengeInvitationRouter.patch(
-  "/challengeInvitation/:id/",
+  "/:id/",
   auth,
   async (req, res) => {
     try {
@@ -115,7 +96,7 @@ ChallengeInvitationRouter.patch(
 /**
  * Return an array of all accepted challengeInvitations by the current user before today's date.
  */
-ChallengeInvitationRouter.get("/challengeInvitation/pastChallenges/", auth, async (req, res) => {
+ChallengeInvitationRouter.get("/pastChallenges/", auth, async (req, res) => {
   try {
     const pastChallenges = await ChallengeInvitation.find({
       invitee: req.user.email,
@@ -131,7 +112,7 @@ ChallengeInvitationRouter.get("/challengeInvitation/pastChallenges/", auth, asyn
  /**
   *  Return an array of all currently on going accepted challengeInvitations of the current user.
   */
-ChallengeInvitationRouter.get("/challengeInvitation/currentChallenges/", auth, async (req, res) => {
+ChallengeInvitationRouter.get("/currentChallenges/", auth, async (req, res) => {
   try {
     const currentChallenges = await ChallengeInvitation.find({
       invitee: req.user.email,
@@ -148,7 +129,7 @@ ChallengeInvitationRouter.get("/challengeInvitation/currentChallenges/", auth, a
 /**
  * Return an array of all accepted challengeInvitations that have a future start date.
  */
-ChallengeInvitationRouter.get("/challengeInvitation/futureChallenges/", auth, async (req, res) => {
+ChallengeInvitationRouter.get("/futureChallenges/", auth, async (req, res) => {
   try {
     const currentChallenges = await ChallengeInvitation.find({
       invitee: req.user.email,
@@ -166,7 +147,7 @@ ChallengeInvitationRouter.get("/challengeInvitation/futureChallenges/", auth, as
  * Return a challenge invitation created by the current user, by id.
  */
 ChallengeInvitationRouter.get(
-  "/challengeInvitation/:id/",
+  "/:id/",
   auth,
   async (req, res) => {
     try {

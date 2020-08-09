@@ -22,7 +22,7 @@ app.use(userRouter);
 app.use('/activityPoints/',activityPointRouter);
 app.use('/totalPointGoals/',totalPointGoalRouter);
 app.use('/challenges/',challengeRouter);
-app.use(ChallengeInvitationRouter);
+app.use('/challengeInvitations/', ChallengeInvitationRouter);
 
 app.get("/", (req, res) => {
   res.status(200);
