@@ -2,6 +2,7 @@ const express = require("express");
 const auth = require("../middleware/auth");
 const TotalPointGoal = require("../models/totalPointGoal");
 const totalPointGoalRouter = new express.Router();
+const ActivityPoint = require("../models/activityPoints");
 
 /**
  * Return sum of total points for a range of dates.
