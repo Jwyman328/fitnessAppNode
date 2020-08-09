@@ -30,7 +30,7 @@ ChallengeInvitationRouter.post(
  *
  */
 ChallengeInvitationRouter.get(
-  "/AllChallengeInvitation/myInvitations/",
+  "/challengeInvitation/", //challengeInvitation
   auth,
   async (req, res) => {
     try {
@@ -49,7 +49,7 @@ ChallengeInvitationRouter.get(
  * Return all challenge invitations with a status of pending for the current user.
  */
 ChallengeInvitationRouter.get(
-  "/AllChallengeInvitation/myInvitations/pending",
+  "/challengeInvitation/pending",
   auth,
   async (req, res) => {
     try {
