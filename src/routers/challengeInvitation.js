@@ -23,33 +23,7 @@ ChallengeInvitationRouter.post(
   }
 );
 
-/**
- * Return a challenge invitation created by the current user, by id.
- */
-ChallengeInvitationRouter.get(
-  "/challengeInvitation/:id/",
-  auth,
-  async (req, res) => {
-    try {
-      console.log({ _id: req.params.id, creator: req.user._id }, "input");
-      const challengeInvitation = await ChallengeInvitation.findOne({
-        _id: req.params.id,
-        creator: req.user._id,
-      });
-      if (challengeInvitation) {
-        res.send(challengeInvitation);
-      } else {
-        res.status(400);
-        res.send(
-          `could not find challenge invitation with id ${req.params.id}`
-        );
-      }
-    } catch (error) {
-      res.status(400);
-      res.send(`error fetching challenge invitation with id ${req.params.id}`);
-    }
-  }
-);
+
 
 /**
  * Return an array of all challengeInvitations of the current user.
@@ -141,7 +115,7 @@ ChallengeInvitationRouter.patch(
 /**
  * Return an array of all accepted challengeInvitations by the current user before today's date.
  */
-ChallengeInvitationRouter.get("/pastChallenges/", auth, async (req, res) => {
+ChallengeInvitationRouter.get("/challengeInvitation/pastChallenges/", auth, async (req, res) => {
   try {
     const pastChallenges = await ChallengeInvitation.find({
       invitee: req.user.email,
@@ -157,7 +131,7 @@ ChallengeInvitationRouter.get("/pastChallenges/", auth, async (req, res) => {
  /**
   *  Return an array of all currently on going accepted challengeInvitations of the current user.
   */
-ChallengeInvitationRouter.get("/currentChallenges/", auth, async (req, res) => {
+ChallengeInvitationRouter.get("/challengeInvitation/currentChallenges/", auth, async (req, res) => {
   try {
     const currentChallenges = await ChallengeInvitation.find({
       invitee: req.user.email,
@@ -174,7 +148,7 @@ ChallengeInvitationRouter.get("/currentChallenges/", auth, async (req, res) => {
 /**
  * Return an array of all accepted challengeInvitations that have a future start date.
  */
-ChallengeInvitationRouter.get("/futureChallenges/", auth, async (req, res) => {
+ChallengeInvitationRouter.get("/challengeInvitation/futureChallenges/", auth, async (req, res) => {
   try {
     const currentChallenges = await ChallengeInvitation.find({
       invitee: req.user.email,
@@ -187,5 +161,33 @@ ChallengeInvitationRouter.get("/futureChallenges/", auth, async (req, res) => {
     res.send(error);
   }
 });
+
+/**
+ * Return a challenge invitation created by the current user, by id.
+ */
+ChallengeInvitationRouter.get(
+  "/challengeInvitation/:id/",
+  auth,
+  async (req, res) => {
+    try {
+      console.log({ _id: req.params.id, creator: req.user._id }, "input");
+      const challengeInvitation = await ChallengeInvitation.findOne({
+        _id: req.params.id,
+        creator: req.user._id,
+      });
+      if (challengeInvitation) {
+        res.send(challengeInvitation);
+      } else {
+        res.status(400);
+        res.send(
+          `could not find challenge invitation with id ${req.params.id}`
+        );
+      }
+    } catch (error) {
+      res.status(400);
+      res.send(`error fetching challenge invitation with id ${req.params.id}`);
+    }
+  }
+);
 
 module.exports = ChallengeInvitationRouter;
