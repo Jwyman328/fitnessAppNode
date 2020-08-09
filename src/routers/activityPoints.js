@@ -45,7 +45,7 @@ activityPointRouter.get("/activityPoint/:id/", auth, async (req, res) => {
 /**
  * Return an array of all activity point objects of the current user.
  */
-activityPointRouter.get("/allActivityPoints/mine/", auth, async (req, res) => {
+activityPointRouter.get("/activityPoints/mine/", auth, async (req, res) => {
   try {
     const allUserActivityPoints = await ActivityPoint.find({
       user: req.user._id,
