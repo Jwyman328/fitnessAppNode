@@ -59,7 +59,7 @@ activityInputRouter.get("/", auth, async (req, res) => {
 /**
  * Update a specific activityInput by its id. 
  */
-activityInputRouter.patch("/:id/", auth, async (req, res) => {
+activityInputRouter.patch("/activityInputs/:id/", auth, async (req, res) => {
   try {
     //creator:req.user._id
     const activityInputUpdate = await ActivityInput.findOneAndUpdate(
