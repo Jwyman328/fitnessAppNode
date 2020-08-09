@@ -22,27 +22,6 @@ activityPointRouter.post("/activityPoint/", auth, async (req, res) => {
 });
 
 /**
- * Return a specific activityPoint by id for the current user.
- */
-activityPointRouter.get("/activityPoint/:id/", auth, async (req, res) => {
-  try {
-    const specificActivityPoint = await ActivityPoint.findOne({
-      _id: req.params.id,
-      user: req.user._id,
-    });
-    if (specificActivityPoint) {
-      res.send(specificActivityPoint);
-    } else {
-      res.status(400);
-      res.send("activity point not found");
-    }
-  } catch (error) {
-    res.status(400);
-    res.send("Error fetching activity point");
-  }
-});
-
-/**
  * Return an array of all activity point objects of the current user.
  */
 activityPointRouter.get("/activityPoint/mine/", auth, async (req, res) => {
@@ -128,5 +107,28 @@ activityPointRouter.get("/pastMonthPoints/", auth, async (req, res) => {
     res.send("error fetch goal activity points");
   }
 });
+
+/**
+ * Return a specific activityPoint by id for the current user.
+ */
+activityPointRouter.get("/activityPoint/:id/", auth, async (req, res) => {
+  try {
+    const specificActivityPoint = await ActivityPoint.findOne({
+      _id: req.params.id,
+      user: req.user._id,
+    });
+    if (specificActivityPoint) {
+      res.send(specificActivityPoint);
+    } else {
+      res.status(400);
+      res.send("activity point not found");
+    }
+  } catch (error) {
+    res.status(400);
+    res.send("Error fetching activity point");
+  }
+});
+
+
 
 module.exports = activityPointRouter;
