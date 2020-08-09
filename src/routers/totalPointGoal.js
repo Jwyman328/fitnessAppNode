@@ -3,35 +3,6 @@ const auth = require("../middleware/auth");
 const TotalPointGoal = require("../models/totalPointGoal");
 const totalPointGoalRouter = new express.Router();
 
-/**
- * Return sum of total points for a range of dates.
- *
- * Return Example:
- * { totalPointForDateRange: 75 }
- */
-totalPointGoalRouter.get(
-  "/goalPoints/:goalStartDate/:goalEndDate/",
-  auth,
-  async (req, res) => {
-    try {
-      const allPointInputsForDateRange = await ActivityPoint.find({
-        user: req.user._id,
-        date: {
-          $gte: new Date(req.params.goalStartDate).toISOString(),
-          $lte: new Date(req.params.goalEndDate).toISOString(),
-        },
-      }).sort("date");
-      const totalPointForDateRange = CalculateTotalPointsFromActivityInputs(
-        allPointInputsForDateRange
-      );
-
-      res.send({ totalPointForDateRange: totalPointForDateRange });
-    } catch (error) {
-      res.status(404);
-      res.send("error fetch goal activity points");
-    }
-  }
-);
 
 
 /**
