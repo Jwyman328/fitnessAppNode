@@ -9,7 +9,7 @@ const updateActivityPointfromActivityInput = require("../utils/updateActivityPoi
  *
  * @return a success message that the input was created
  */
-activityInputRouter.post("/activityInput/", auth, async (req, res) => {
+activityInputRouter.post("/activityInputs/", auth, async (req, res) => {
   try {
     req.body.user = req.user._id;
     const newActivityInput = new ActivityInput(req.body);
