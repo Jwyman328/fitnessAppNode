@@ -29,34 +29,6 @@ app.get("/", (req, res) => {
   res.send("hello world");
 });
 
-/**
- * Return sum of total points for a range of dates.
- *
- * Return Example:
- * { totalPointForDateRange: 75 }
- */
-app.get(
-  "/goalPoints/:goalStartDate/:goalEndDate/",
-  auth,
-  async (req, res) => {
-    try {
-      const allPointInputsForDateRange = await ActivityPoint.find({
-        user: req.user._id,
-        date: {
-          $gte: new Date(req.params.goalStartDate).toISOString(),
-          $lte: new Date(req.params.goalEndDate).toISOString(),
-        },
-      }).sort("date");
-      const totalPointForDateRange = CalculateTotalPointsFromActivityInputs(
-        allPointInputsForDateRange
-      );
 
-      res.send({ totalPointForDateRange: totalPointForDateRange });
-    } catch (error) {
-      res.status(404);
-      res.send("error fetch goal activity points");
-    }
-  }
-);
 
 module.exports = app;
