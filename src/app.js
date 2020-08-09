@@ -20,7 +20,7 @@ app.use(express.json());
 app.use('/activityInputs/',activityInputRouter);
 app.use(userRouter);
 app.use('/activityPoints/',activityPointRouter);
-app.use(totalPointGoalRouter);
+app.use('/totalPointGoals/',totalPointGoalRouter);
 app.use('/challenges/',challengeRouter);
 app.use(ChallengeInvitationRouter);
 

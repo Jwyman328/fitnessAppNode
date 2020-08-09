@@ -39,7 +39,7 @@ totalPointGoalRouter.get(
  * 
  * @return Success message that totalPointGoal was created
  */
-totalPointGoalRouter.post("/totalPointGoal/", auth, async (req, res) => {
+totalPointGoalRouter.post("/", auth, async (req, res) => {
   try {
     req.body.user = req.user._id;
     const newTotalPointGoal = await new TotalPointGoal(req.body);
@@ -51,32 +51,13 @@ totalPointGoalRouter.post("/totalPointGoal/", auth, async (req, res) => {
   }
 });
 
-/**
- * Return totalPointGoal for the current user by id.
- */
-totalPointGoalRouter.get("/totalPointGoal/:id/", auth, async (req, res) => {
-  try {
-    const totalPointGoal = await TotalPointGoal.findOne({
-      _id: req.params.id,
-      user: req.user._id,
-    });
-    if (totalPointGoal) {
-      res.send(totalPointGoal);
-    } else {
-      res.send(`could not get total point goal with ${totalPointGoal}`);
-    }
-  } catch (error) {
-    res.status(400);
-    res.send(`error getting point goal with id ${req.params.id}`);
-  }
-});
 
 /**
  * Delete a totalPointGoal for the current user by id.
  * 
  * @return success message of deletion.
  */
-totalPointGoalRouter.delete("/totalPointGoal/:id/", auth, async (req, res) => {
+totalPointGoalRouter.delete("/:id/", auth, async (req, res) => {
   try {
     const totalPointGoalDelete = await TotalPointGoal.findOneAndDelete({
       _id: req.params.id,
@@ -96,7 +77,7 @@ totalPointGoalRouter.delete("/totalPointGoal/:id/", auth, async (req, res) => {
 /**
  * Return an array of all totalPointGoals for the current user.
  */
-totalPointGoalRouter.get("/allTotalPointGoal/", auth, async (req, res) => {
+totalPointGoalRouter.get("/", auth, async (req, res) => {
   try {
     const allPointGoals = await TotalPointGoal.find({ user: req.user._id });
     res.send(allPointGoals);
@@ -153,5 +134,26 @@ totalPointGoalRouter.get("/pastGoals/", auth, async (req, res) => {
     res.send(error);
   }
 });
+
+/**
+ * Return totalPointGoal for the current user by id.
+ */
+totalPointGoalRouter.get("/:id/", auth, async (req, res) => {
+  try {
+    const totalPointGoal = await TotalPointGoal.findOne({
+      _id: req.params.id,
+      user: req.user._id,
+    });
+    if (totalPointGoal) {
+      res.send(totalPointGoal);
+    } else {
+      res.send(`could not get total point goal with ${totalPointGoal}`);
+    }
+  } catch (error) {
+    res.status(400);
+    res.send(`error getting point goal with id ${req.params.id}`);
+  }
+});
+
 
 module.exports = totalPointGoalRouter;
