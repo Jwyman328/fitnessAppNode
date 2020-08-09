@@ -19,7 +19,7 @@ app.use(compression());
 app.use(express.json());
 app.use('/activityInputs/',activityInputRouter);
 app.use(userRouter);
-app.use('activityPoints',activityPointRouter);
+app.use('/activityPoints/',activityPointRouter);
 app.use(totalPointGoalRouter);
 app.use(challengeRouter);
 app.use(ChallengeInvitationRouter);
