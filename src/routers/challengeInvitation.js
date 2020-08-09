@@ -121,7 +121,7 @@ ChallengeInvitationRouter.get(
  * @Return success message of challenge invitation status change.
  */
 ChallengeInvitationRouter.patch(
-  "/updateChallengeStatus/:id/",
+  "/challengeInvitation/:id/",
   auth,
   async (req, res) => {
     try {
