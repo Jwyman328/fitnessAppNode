@@ -75,7 +75,7 @@ activityPointRouter.get(
 /**
  * Return activityPoint object of current user for current date.
  */
-activityPointRouter.get("/todaysPoints/", auth, async (req, res) => {
+activityPointRouter.get("/activityPoints/today/", auth, async (req, res) => {
   try {
     const today = new Date().toISOString().split("T")[0];
     const todayActivityPoints = await ActivityPoint.find({
