@@ -17,7 +17,7 @@ app.use(helmet());
 app.use(cors());
 app.use(compression());
 app.use(express.json());
-app.use(activityInputRouter);
+app.use('activityInputs',activityInputRouter);
 app.use(userRouter);
 app.use(activityPointRouter);
 app.use(totalPointGoalRouter);
