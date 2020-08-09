@@ -25,7 +25,7 @@ activityInputRouter.post("/activityInputs/", auth, async (req, res) => {
 /**
  * Return an individual activityInput by id.
  */
-activityInputRouter.get("/activityInput/:id/", auth, async (req, res) => {
+activityInputRouter.get("/activityInputs/:id/", auth, async (req, res) => {
   try {
     const activityInput = await ActivityInput.findOne({
       _id: req.params.id,
@@ -59,7 +59,7 @@ activityInputRouter.get("/allActivityInputs/", auth, async (req, res) => {
 /**
  * Update a specific activityInput by its id. 
  */
-activityInputRouter.patch("/activityInput/:id/", auth, async (req, res) => {
+activityInputRouter.patch("/activityInputs/:id/", auth, async (req, res) => {
   try {
     //creator:req.user._id
     const activityInputUpdate = await ActivityInput.findOneAndUpdate(
