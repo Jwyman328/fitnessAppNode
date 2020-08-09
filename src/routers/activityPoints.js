@@ -9,7 +9,7 @@ const getDateOneMonthFromToday = require('../utils/getDateOneMonthFromToday');
  *
  * @return the newly created activity Point
  */
-activityPointRouter.post("/activityPoints/", auth, async (req, res) => {
+activityPointRouter.post("/", auth, async (req, res) => {
   try {
     req.body.user = req.user._id;
     const newActivityPoint = new ActivityPoint(req.body);
@@ -24,7 +24,7 @@ activityPointRouter.post("/activityPoints/", auth, async (req, res) => {
 /**
  * Return an array of all activity point objects of the current user.
  */
-activityPointRouter.get("/activityPoints/", auth, async (req, res) => {
+activityPointRouter.get("/", auth, async (req, res) => {
   try {
     const allUserActivityPoints = await ActivityPoint.find({
       user: req.user._id,
@@ -43,39 +43,9 @@ activityPointRouter.get("/activityPoints/", auth, async (req, res) => {
 });
 
 /**
- * Return sum of total points for a range of dates.
- *
- * Return Example:
- * { totalPointForDateRange: 75 }
- */
-activityPointRouter.get(
-  "/goalPoints/:goalStartDate/:goalEndDate/",
-  auth,
-  async (req, res) => {
-    try {
-      const allPointInputsForDateRange = await ActivityPoint.find({
-        user: req.user._id,
-        date: {
-          $gte: new Date(req.params.goalStartDate).toISOString(),
-          $lte: new Date(req.params.goalEndDate).toISOString(),
-        },
-      }).sort("date");
-      const totalPointForDateRange = CalculateTotalPointsFromActivityInputs(
-        allPointInputsForDateRange
-      );
-
-      res.send({ totalPointForDateRange: totalPointForDateRange });
-    } catch (error) {
-      res.status(404);
-      res.send("error fetch goal activity points");
-    }
-  }
-);
-
-/**
  * Return activityPoint object of current user for current date.
  */
-activityPointRouter.get("/activityPoints/today/", auth, async (req, res) => {
+activityPointRouter.get("/today/", auth, async (req, res) => {
   try {
     const today = new Date().toISOString().split("T")[0];
     const todayActivityPoints = await ActivityPoint.find({
@@ -92,7 +62,7 @@ activityPointRouter.get("/activityPoints/today/", auth, async (req, res) => {
 /**
  * Return an array of all ActivityPoint objects from the past 30 days.
  */
-activityPointRouter.get("/pastMonthPoints/", auth, async (req, res) => {
+activityPointRouter.get("/pastMonth/", auth, async (req, res) => {
   try {
     const oneMonthAgoFromToday = getDateOneMonthFromToday()
     
@@ -111,7 +81,7 @@ activityPointRouter.get("/pastMonthPoints/", auth, async (req, res) => {
 /**
  * Return a specific activityPoint by id for the current user.
  */
-activityPointRouter.get("/activityPoints/:id/", auth, async (req, res) => {
+activityPointRouter.get("/:id/", auth, async (req, res) => {
   try {
     const specificActivityPoint = await ActivityPoint.findOne({
       _id: req.params.id,
@@ -128,6 +98,8 @@ activityPointRouter.get("/activityPoints/:id/", auth, async (req, res) => {
     res.send("Error fetching activity point");
   }
 });
+
+
 
 
 
