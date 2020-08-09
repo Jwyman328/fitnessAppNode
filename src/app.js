@@ -21,7 +21,7 @@ app.use('/activityInputs/',activityInputRouter);
 app.use(userRouter);
 app.use('/activityPoints/',activityPointRouter);
 app.use(totalPointGoalRouter);
-app.use('challenges',challengeRouter);
+app.use('/challenges/',challengeRouter);
 app.use(ChallengeInvitationRouter);
 
 app.get("/", (req, res) => {
