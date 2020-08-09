@@ -9,7 +9,7 @@ const getDateOneMonthFromToday = require('../utils/getDateOneMonthFromToday');
  *
  * @return the newly created activity Point
  */
-activityPointRouter.post("/activityPoint/", auth, async (req, res) => {
+activityPointRouter.post("/activityPoints/", auth, async (req, res) => {
   try {
     req.body.user = req.user._id;
     const newActivityPoint = new ActivityPoint(req.body);
@@ -24,7 +24,7 @@ activityPointRouter.post("/activityPoint/", auth, async (req, res) => {
 /**
  * Return an array of all activity point objects of the current user.
  */
-activityPointRouter.get("/activityPoint/mine/", auth, async (req, res) => {
+activityPointRouter.get("/activityPoints/", auth, async (req, res) => {
   try {
     const allUserActivityPoints = await ActivityPoint.find({
       user: req.user._id,
@@ -111,7 +111,7 @@ activityPointRouter.get("/pastMonthPoints/", auth, async (req, res) => {
 /**
  * Return a specific activityPoint by id for the current user.
  */
-activityPointRouter.get("/activityPoint/:id/", auth, async (req, res) => {
+activityPointRouter.get("/activityPoints/:id/", auth, async (req, res) => {
   try {
     const specificActivityPoint = await ActivityPoint.findOne({
       _id: req.params.id,
