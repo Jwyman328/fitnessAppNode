@@ -22,7 +22,7 @@
     "mongoose": "^5.9.0",
     "nodemon": "^2.0.2",
     "redis": "^3.0.2",
-    "validator": "^12.2.0"
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "@testing-library/react": "^9.4.0",
